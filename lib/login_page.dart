@@ -3,6 +3,7 @@ import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'custom_widgets/campeao_elevated_button.dart';
 import 'custom_widgets/campeao_text_field.dart';
+import 'images/images.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -28,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
             child: CircleAvatar(
               radius: 120,
               child: ClipRRect(
-                child: Image.asset('assets/images/caldo_cana_campeao.png'),
+                child: Image.asset(Images.caldoCanaCampeaoLogo),
                 borderRadius: BorderRadius.circular(1000),
               ),
             ),
