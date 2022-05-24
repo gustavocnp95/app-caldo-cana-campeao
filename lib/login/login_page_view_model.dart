@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:caldo_cana_campeao/login/login_repository.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'model/login_request.dart';
@@ -12,30 +13,23 @@ class LoginPageViewModel extends ChangeNotifier {
   bool _doingAsyncOperation = false;
   bool _errorHapenned = false;
   TokenResponse? _tokenResponse;
-  StreamController<bool> loggedInStream = StreamController<bool>();
 
   TokenResponse? get tokenResponse => _tokenResponse;
 
   bool get doingAsyncOperation => _doingAsyncOperation;
 
-  @override
-  void dispose() {
-    loggedInStream.close();
-    super.dispose();
-  }
-
-  void doLogin(String email, String password) {
+  void doLogin(String email, String password, Function afterLogin) {
     _setDoingAsyncOperation(true);
     _loginRepository
         .doLogin(LoginRequest(email, password))
-        .then((userInfos) => _onLoginSuccess(userInfos))
+        .then((userInfos) => _onLoginSuccess(userInfos, afterLogin))
         .whenComplete(() => _setDoingAsyncOperation(false));
   }
 
-  void _onLoginSuccess(TokenResponse userInfos) {
+  void _onLoginSuccess(TokenResponse userInfos, Function afterLogin) {
     _tokenResponse = userInfos;
     saveUserInfos(userInfos);
-    loggedInStream.add(true);
+    afterLogin();
   }
 
   void saveUserInfos(TokenResponse userInfos) {

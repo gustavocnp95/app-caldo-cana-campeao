@@ -7,6 +7,7 @@ import '../commons/sharedpreferences/campeao_shared_preferences.dart';
 import '../custom_widgets/campeao_elevated_button.dart';
 import '../custom_widgets/campeao_text_field.dart';
 import '../images/images.dart';
+import '../teste.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,19 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String emailInput = "";
   String passwordInput = "";
-  late LoginPageViewModel viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-    setupLoggedInStream();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    viewModel.loggedInStream.close();
-  }
+  LoginPageViewModel? viewModel;
 
   @override
   Widget build(final BuildContext context) {
@@ -77,7 +66,14 @@ class _LoginPageState extends State<LoginPage> {
             child: CampeaoElevatedButton(
               buttonText: 'Entrar',
               onPressed: () {
-                viewModel.doLogin(emailInput, passwordInput);
+                viewModel?.doLogin(
+                  emailInput.trim(),
+                  passwordInput.trim(),
+                  () => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Teste()),
+                      ModalRoute.withName('/Home')),
+                );
               },
             ),
           )
@@ -86,18 +82,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void onEmailTextChanged(String newText) {
     emailInput = newText;
   }
 
   void onPasswordTextChanged(String newText) {
     passwordInput = newText;
-  }
-
-  void setupLoggedInStream() {
-    viewModel.loggedInStream.stream.listen((loggedIn) async {
-      String? teste = await CampeaoSharedPreferences.getUserName();
-      Fluttertoast.showToast(msg: teste ?? "deu ruim");
-    });
   }
 }
