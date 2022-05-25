@@ -49,11 +49,18 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   flutter_launcher_icons: "^0.9.0"
+  flutter_launcher_name:
+    git:
+      url: https://github.com/ride4sun/flutter_launcher_name
+      ref: "0.9.1"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+
+flutter_launcher_name:
+  name: "Campeão"
 
 flutter_icons:
   image_path: "assets/images/caldo_cana_campeao.png"
