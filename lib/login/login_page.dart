@@ -1,13 +1,11 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/login/login_page_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import '../commons/sharedpreferences/campeao_shared_preferences.dart';
 import '../custom_widgets/campeao_elevated_button.dart';
 import '../custom_widgets/campeao_text_field.dart';
 import '../images/images.dart';
-import '../teste.dart';
+import '../home/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -71,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   passwordInput.trim(),
                   () => Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const Teste()),
+                      MaterialPageRoute(builder: (context) => const HomePage()),
                       ModalRoute.withName('/Home')),
                 );
               },
