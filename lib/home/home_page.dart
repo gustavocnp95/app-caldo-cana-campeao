@@ -2,6 +2,7 @@ import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,9 +11,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(children: <Widget>[
+        child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
           _createHeader(),
           _createReportAbstract(),
+          _createMenuOptions(),
         ]),
       ),
     );
@@ -54,20 +56,77 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Padding _createMenuOptions() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 40),
+      child: GridView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 55,
+            mainAxisSpacing: 32,
+            childAspectRatio: 1.5),
+        children: [
+          _createOption("Ordem de Compra", () {
+            Fluttertoast.showToast(msg: "soon, very soon!");
+          }),
+          _createOption("Novo Pedido", () {
+            Fluttertoast.showToast(msg: "soon, very soon!");
+          }),
+          _createOption("Relatórios", () {
+            Fluttertoast.showToast(msg: "soon, very soon!");
+          }),
+          _createOption("Produtos", () {
+            Fluttertoast.showToast(msg: "soon, very soon!");
+          }),
+        ],
+      ),
+    );
+  }
+
+  GestureDetector _createOption(String title, Function action) {
+    return GestureDetector(
+      onTap: () {
+        action();
+      },
+      child: Card(
+        elevation: 1,
+        color: CampeaoColors.primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
+          ),
+        ),
+      ),
+    );
+  }
+
   Text _createTitleLabel() {
     return const Text(
       "Entrada",
       style: TextStyle(
-          color: CampeaoColors.primaryColorDark, fontWeight: FontWeight.w500),
+          color: CampeaoColors.primaryColorDark,
+          fontWeight: FontWeight.w500,
+          fontSize: 18),
     );
   }
 
   Padding _createAmountLabel() {
     return const Padding(
-      padding: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: 16),
       child: Text(
         "R\$ 50,00",
-        style: TextStyle(fontWeight: FontWeight.w700),
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 18,
+        ),
       ),
     );
   }
