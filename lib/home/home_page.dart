@@ -1,22 +1,82 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
-import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Fluttertoast.showToast(msg: CampeaoSharedPreferences.getUserEmail() ?? "ruim");
     return Scaffold(
       body: Center(
         child: ListView(children: <Widget>[
           _createHeader(),
+          _createReportAbstract(),
         ]),
       ),
+    );
+  }
+
+  Padding _createReportAbstract() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, right: 8, top: 40),
+      child: Card(
+        elevation: 5,
+        color: CampeaoColors.primaryBackgroundColorSoft,
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: CampeaoColors.primaryColorDark),
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, left: 16, bottom: 20),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Row(children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                _createTitleLabel(),
+                _createAmountLabel(),
+              ]),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _createForwardButton(),
+                      ]),
+                ),
+              ),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text _createTitleLabel() {
+    return const Text(
+      "Entrada",
+      style: TextStyle(
+          color: CampeaoColors.primaryColorDark, fontWeight: FontWeight.w500),
+    );
+  }
+
+  Padding _createAmountLabel() {
+    return const Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Text(
+        "R\$ 50,00",
+        style: TextStyle(fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+
+  FloatingActionButton _createForwardButton() {
+    return FloatingActionButton.small(
+      onPressed: () {},
+      backgroundColor: CampeaoColors.primaryColor,
+      child: const Icon(Icons.arrow_forward),
     );
   }
 
@@ -54,7 +114,7 @@ class HomePage extends StatelessWidget {
     return const Text(
       'Olá, Julio!',
       style: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w700,
           color: CampeaoColors.primaryTextColor,
           fontSize: 25),
     );

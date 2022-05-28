@@ -5,4 +5,5 @@ class CampeaoColors {
   static const Color primaryColorDark = Color.fromRGBO(240, 125, 2, 1);
   static const Color primaryColorSoft = Color.fromRGBO(242, 124, 4, 0.16);
   static const Color primaryTextColor = Color.fromRGBO(69, 69, 69, 1);
+  static const Color primaryBackgroundColorSoft = Color.fromRGBO(253, 234, 215, 1);
 }

@@ -11,11 +11,14 @@ class CampeaoAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       leading: Padding(
         padding: const EdgeInsets.all(11),
-          child: FloatingActionButton(
-        onPressed: () {Navigator.pop(context);},
-            backgroundColor: CampeaoColors.primaryColor,
-        child: const Icon(Icons.arrow_back),
-      )),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          backgroundColor: CampeaoColors.primaryColor,
+          child: const Icon(Icons.arrow_back),
+        ),
+      ),
     );
   }
 
