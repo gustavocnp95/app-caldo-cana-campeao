@@ -1,3 +1,4 @@
+import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'package:caldo_cana_campeao/login/login_page.dart';
 import 'package:caldo_cana_campeao/login/login_page_view_model.dart';
 import 'package:caldo_cana_campeao/home/home_page.dart';
@@ -14,7 +15,9 @@ class CaldoCanaCampeaoApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => LoginPageViewModel()),
         ],
         child: MaterialApp(
-          home: LoginPage(),
+          home: CampeaoSharedPreferences.getUserToken() != null
+              ? const HomePage()
+              : LoginPage(),
           routes: <String, WidgetBuilder>{
             '/login': (BuildContext context) => LoginPage(),
             '/home': (BuildContext context) => HomePage(),
