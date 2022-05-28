@@ -192,9 +192,10 @@ class HomePage extends StatelessWidget {
   }
 
   Text _createUserWelcome() {
-    return const Text(
-      'Olá, Julio!',
-      style: TextStyle(
+    final String userName = CampeaoSharedPreferences.getUserName() ?? "";
+    return Text(
+      'Olá, $userName!',
+      style: const TextStyle(
           fontWeight: FontWeight.w700,
           color: CampeaoColors.primaryTextColor,
           fontSize: 25),
