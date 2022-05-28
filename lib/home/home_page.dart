@@ -225,13 +225,26 @@ class HomePage extends StatelessWidget {
   InkWell _createAvatar() {
     return InkWell(
       onTap: () {},
-      child: const CircleAvatar(
-        backgroundColor: CampeaoColors.primaryColor,
-        radius: 60,
-        child: Icon(
-          Icons.person_outline,
-          size: 95,
+      child: Container(
+        decoration: const BoxDecoration(
           color: Colors.white,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 3,
+              color: Colors.black38,
+              spreadRadius: 1,
+            )
+          ],
+        ),
+        child: const CircleAvatar(
+          backgroundColor: CampeaoColors.primaryColor,
+          radius: 60,
+          child: Icon(
+            Icons.person_outline,
+            size: 95,
+            color: Colors.white,
+          ),
         ),
       ),
     );
