@@ -1,6 +1,7 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
+import 'package:caldo_cana_campeao/user_menu/UserMenuPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
-          _createHeader(),
+          _createHeader(context),
           _createReportAbstract(),
           _createMenuOptions(),
         ]),
@@ -160,7 +161,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Padding _createHeader() {
+  Padding _createHeader(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, top: 40, right: 8),
       child: Column(
@@ -171,7 +172,7 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: _createAvatar(),
+                  child: _createAvatar(context),
                 ),
               ),
               _createHideAmountButton(),
@@ -222,9 +223,14 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  InkWell _createAvatar() {
+  InkWell _createAvatar(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const UserMenuPage()),
+        );
+      },
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
