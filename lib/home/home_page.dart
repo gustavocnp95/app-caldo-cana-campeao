@@ -91,8 +91,8 @@ class HomePage extends StatelessWidget {
     return options;
   }
 
-  GestureDetector _createOption(String title, Function action) {
-    return GestureDetector(
+  InkWell _createOption(String title, Function action) {
+    return InkWell(
       onTap: () {
         action();
       },
@@ -210,8 +210,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  GestureDetector _createAvatar() {
-    return GestureDetector(
+  InkWell _createAvatar() {
+    return InkWell(
       onTap: () {},
       child: const CircleAvatar(
         backgroundColor: CampeaoColors.primaryColor,
