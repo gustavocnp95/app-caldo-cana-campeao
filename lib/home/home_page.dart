@@ -1,5 +1,6 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
+import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -67,22 +68,28 @@ class HomePage extends StatelessWidget {
             crossAxisSpacing: 55,
             mainAxisSpacing: 32,
             childAspectRatio: 1.5),
-        children: [
-          _createOption("Ordem de Compra", () {
-            Fluttertoast.showToast(msg: "soon, very soon!");
-          }),
-          _createOption("Novo Pedido", () {
-            Fluttertoast.showToast(msg: "soon, very soon!");
-          }),
-          _createOption("Relatórios", () {
-            Fluttertoast.showToast(msg: "soon, very soon!");
-          }),
-          _createOption("Produtos", () {
-            Fluttertoast.showToast(msg: "soon, very soon!");
-          }),
-        ],
+        children: _createOptionsList(),
       ),
     );
+  }
+
+  List<Widget> _createOptionsList() {
+    List<Widget> options = <Widget>[];
+    options.add(_createOption("Ordem de Compra", () {
+      Fluttertoast.showToast(msg: "soon, very soon!");
+    }));
+    options.add(_createOption("Novo Pedido", () {
+      Fluttertoast.showToast(msg: "soon, very soon!");
+    }));
+    options.add(_createOption("Relatórios", () {
+      Fluttertoast.showToast(msg: "soon, very soon!");
+    }));
+    if (CampeaoSharedPreferences.getUserIsAdmin() ?? false) {
+      options.add(_createOption("Produtos", () {
+        Fluttertoast.showToast(msg: "soon, very soon!");
+      }));
+    }
+    return options;
   }
 
   GestureDetector _createOption(String title, Function action) {
@@ -91,7 +98,7 @@ class HomePage extends StatelessWidget {
         action();
       },
       child: Card(
-        elevation: 1,
+        elevation: 5,
         color: CampeaoColors.primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(9),
@@ -101,7 +108,10 @@ class HomePage extends StatelessWidget {
           child: Text(
             title,
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+            ),
           ),
         ),
       ),
