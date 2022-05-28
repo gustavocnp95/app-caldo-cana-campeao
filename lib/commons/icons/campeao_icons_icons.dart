@@ -16,6 +16,10 @@
 ///         Author:    Stephen Hutchings
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://typicons.com/
+/// * Modern Pictograms, Copyright (c) 2012 by John Caserta. All rights reserved.
+///         Author:    John Caserta
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://thedesignoffice.org/project/modern-pictograms/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -26,4 +30,5 @@ class CampeaoIcons {
   static const String? _kFontPkg = null;
 
   static const IconData user_add_outline = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData money = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

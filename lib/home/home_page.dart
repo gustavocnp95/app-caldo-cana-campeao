@@ -117,13 +117,25 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Text _createTitleLabel() {
-    return const Text(
-      "Entrada",
-      style: TextStyle(
-          color: CampeaoColors.primaryColorDark,
-          fontWeight: FontWeight.w500,
-          fontSize: 18),
+  Row _createTitleLabel() {
+    return Row(
+      children: const [
+        Text(
+          "Entrada",
+          style: TextStyle(
+              color: CampeaoColors.primaryColorDark,
+              fontWeight: FontWeight.w500,
+              fontSize: 18),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Icon(
+            CampeaoIcons.money,
+            size: 25,
+            color: CampeaoColors.primaryColor,
+          ),
+        )
+      ],
     );
   }
 

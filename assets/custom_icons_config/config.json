@@ -11,6 +11,12 @@
       "css": "user-add-outline",
       "code": 59392,
       "src": "typicons"
+    },
+    {
+      "uid": "212ab54aac31030950fec3e2448ebee9",
+      "css": "money",
+      "code": 59393,
+      "src": "modernpics"
     }
   ]
 }
