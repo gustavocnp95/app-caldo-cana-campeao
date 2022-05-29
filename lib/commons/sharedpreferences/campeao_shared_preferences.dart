@@ -67,4 +67,12 @@ class CampeaoSharedPreferences {
     return _sharedPreferences
         ?.getBool(CampeaoSharedPreferencesConstants.userIsAdmin);
   }
+
+  static void clearLogonInfos() {
+    _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userToken);
+    _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userName);
+    _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userId);
+    _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userIsAdmin);
+    _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userEmail);
+  }
 }

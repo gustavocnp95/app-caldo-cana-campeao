@@ -1,4 +1,5 @@
 import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
+import 'package:caldo_cana_campeao/login/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -26,17 +27,30 @@ class UserMenuPage extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 34),
+            Padding(
+              padding: const EdgeInsets.only(top: 34),
               child: Align(
                 alignment: Alignment.topCenter,
-                child: CircleAvatar(
-                  backgroundColor: CampeaoColors.primaryColorDark,
-                  radius: 60,
-                  child: Icon(
-                    Icons.person_outline,
-                    size: 95,
+                child: Container(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 3,
+                        color: Colors.black38,
+                        spreadRadius: 1,
+                      )
+                    ],
+                  ),
+                  child: const CircleAvatar(
+                    backgroundColor: CampeaoColors.primaryColorDark,
+                    radius: 75,
+                    child: Icon(
+                      Icons.person_outline,
+                      size: 125,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -49,24 +63,37 @@ class UserMenuPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 48),
-              child: _createOptions(),
-            )
+                padding: const EdgeInsets.only(top: 48),
+                child: _createOptions(context))
           ],
         ),
       ),
     );
   }
 
-  ListView _createOptions() {
+  ListView _createOptions(BuildContext context) {
+    List<Widget> options = <Widget>[];
+    options.add(
+      _createOption("Alterar senha", () {}),
+    );
+    if (CampeaoSharedPreferences.getUserIsAdmin() ?? false) {
+      options.add(
+        _createOption("Perfis cadastrados", () {}),
+      );
+    }
+    options.add(
+      _createOption("Sair da conta", () {
+        CampeaoSharedPreferences.clearLogonInfos();
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+            ModalRoute.withName('/login'));
+      }),
+    );
     return ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      children: [
-        _createOption("Alterar senha", () {}),
-        _createOption("Perfis cadastrados", () {}),
-        _createOption("Sair do aplicativo", () {}),
-      ],
+      children: options,
     );
   }
 
