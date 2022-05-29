@@ -1,6 +1,5 @@
 import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
 import 'package:caldo_cana_campeao/login/login_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
