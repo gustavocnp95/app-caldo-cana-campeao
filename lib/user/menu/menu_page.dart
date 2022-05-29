@@ -1,5 +1,6 @@
 import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
 import 'package:caldo_cana_campeao/login/login_page.dart';
+import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -73,7 +74,13 @@ class MenuPage extends StatelessWidget {
   ListView _createOptions(BuildContext context) {
     List<Widget> options = <Widget>[];
     options.add(
-      _createOption("Alterar informações de cadastro", () {}),
+      _createOption("Alterar informações de cadastro", () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UserVisualizationEditionPage()),
+        );
+      }),
     );
     if (CampeaoSharedPreferences.getUserIsAdmin() ?? false) {
       options.add(
