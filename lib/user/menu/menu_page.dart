@@ -3,12 +3,12 @@ import 'package:caldo_cana_campeao/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import '../color/theme_colors.dart';
-import '../commons/sharedpreferences/campeao_shared_preferences.dart';
-import '../custom_widgets/campeao_elevated_button.dart';
+import '../../color/theme_colors.dart';
+import '../../commons/sharedpreferences/campeao_shared_preferences.dart';
+import '../../custom_widgets/campeao_elevated_button.dart';
 
-class UserMenuPage extends StatelessWidget {
-  const UserMenuPage({Key? key}) : super(key: key);
+class MenuPage extends StatelessWidget {
+  const MenuPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

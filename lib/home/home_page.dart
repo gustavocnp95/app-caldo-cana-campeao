@@ -1,9 +1,10 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
-import 'package:caldo_cana_campeao/user_menu/UserMenuPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../user/menu/menu_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -229,7 +230,7 @@ class HomePage extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const UserMenuPage()),
+          MaterialPageRoute(builder: (context) => const MenuPage()),
         );
       },
       child: Container(
