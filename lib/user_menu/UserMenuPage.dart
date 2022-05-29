@@ -74,7 +74,7 @@ class UserMenuPage extends StatelessWidget {
   ListView _createOptions(BuildContext context) {
     List<Widget> options = <Widget>[];
     options.add(
-      _createOption("Alterar senha", () {}),
+      _createOption("Alterar informações de cadastro", () {}),
     );
     if (CampeaoSharedPreferences.getUserIsAdmin() ?? false) {
       options.add(
