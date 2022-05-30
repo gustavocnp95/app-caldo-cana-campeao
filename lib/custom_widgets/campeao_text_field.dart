@@ -4,14 +4,18 @@ import '../color/theme_colors.dart';
 
 class CampeaoInputTextField extends StatefulWidget {
   final Function onTextChanged;
+  final String? initialText;
   final String? hintText;
+  final bool enabled;
   final bool hidePasswordEnabled;
 
   const CampeaoInputTextField(
       {Key? key,
       required this.onTextChanged,
       this.hintText,
-      this.hidePasswordEnabled = false})
+      this.hidePasswordEnabled = false,
+      this.initialText,
+      this.enabled = true})
       : super(key: key);
 
   @override
@@ -28,6 +32,7 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
   void initState() {
     setupFocusListener();
     setupObscureText();
+    _fieldController.text = widget.initialText ?? "";
     super.initState();
   }
 
@@ -41,6 +46,7 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
   @override
   Widget build(final BuildContext context) {
     return TextField(
+      enabled: widget.enabled,
       controller: _fieldController,
       obscureText: _obscureText,
       focusNode: _textFieldFocusNode,
