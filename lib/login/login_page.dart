@@ -23,13 +23,31 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
+
           Padding(
             padding: const EdgeInsets.only(top: 48),
-            child: CircleAvatar(
-              radius: 120,
-              child: ClipRRect(
-                child: Image.asset(Images.caldoCanaCampeaoLogo),
-                borderRadius: BorderRadius.circular(1000),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 10,
+                    color: Colors.black38,
+                    spreadRadius: 1,
+                  )
+                ],
+              ),
+              child: CircleAvatar(
+                backgroundColor: CampeaoColors.primaryColor,
+                radius: 120,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: ClipRRect(
+                    child: Image.asset(Images.caldoCanaCampeaoLogo),
+                    borderRadius: BorderRadius.circular(1000),
+                  ),
+                ),
               ),
             ),
           ),
