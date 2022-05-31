@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import '../../color/theme_colors.dart';
 import '../../commons/sharedpreferences/campeao_shared_preferences.dart';
 import '../../custom_widgets/campeao_elevated_button.dart';
+import '../infos/model/user_visualization_edition.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -78,7 +79,14 @@ class MenuPage extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => UserVisualizationEditionPage()),
+            builder: (context) => UserVisualizationEditionPage(
+              userVisualizationEdition: UserVisualizationEdition(
+                  id: CampeaoSharedPreferences.getUserId() ?? 0,
+                  name: CampeaoSharedPreferences.getUserName() ?? "",
+                  email: CampeaoSharedPreferences.getUserEmail() ?? "",
+                  isAdmin: CampeaoSharedPreferences.getUserIsAdmin() ?? false),
+            ),
+          ),
         );
       }),
     );

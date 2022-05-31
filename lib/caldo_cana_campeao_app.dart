@@ -24,7 +24,6 @@ class CaldoCanaCampeaoApp extends StatelessWidget {
             '/login': (BuildContext context) => LoginPage(),
             '/home': (BuildContext context) => HomePage(),
             '/user/menu': (BuildContext context) => MenuPage(),
-            '/user/infos': (BuildContext context) => UserVisualizationEditionPage()
           },
         ));
   }

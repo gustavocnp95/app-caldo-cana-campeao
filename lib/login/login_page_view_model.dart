@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:caldo_cana_campeao/login/login_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'model/login_request.dart';
