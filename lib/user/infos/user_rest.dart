@@ -7,11 +7,11 @@ import '../../commons/network/network_constants.dart';
 import 'model/user_response.dart';
 
 class UserRest {
-  Future<UserResponse> updateUser(UserUpdateDto loginRequest) async {
+  Future<UserResponse> updateUser(UserUpdateDto userUpdateDto) async {
     final response = await http.put(
       Uri.parse(CampeaoNetworkConstants.wsUrl + "users"),
       headers: CampeaoNetworkConstants.headers,
-      body: jsonEncode(loginRequest.toJson()),
+      body: jsonEncode(userUpdateDto.toJson()),
     );
     if (response.statusCode == CampeaoNetworkConstants.statusOk) {
       return UserResponse.fromJson(jsonDecode(response.body));

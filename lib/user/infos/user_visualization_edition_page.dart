@@ -1,8 +1,11 @@
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
+import 'package:caldo_cana_campeao/custom_widgets/AppLoading.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_visualization_edition.dart';
+import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../color/theme_colors.dart';
 import '../../images/images.dart';
@@ -20,12 +23,21 @@ class UserVisualizationEditionPage extends StatefulWidget {
 
 class _UserVisualizationEditionPageState
     extends State<UserVisualizationEditionPage> {
+  UserVisualizationEditionPageViewModel? _viewModel = null;
   bool _editMode = false;
   final String _editScreenTitle = "Editar cadastro";
   final String _visualizationScreenTitle = "Visualizar cadastro";
 
   @override
   Widget build(BuildContext context) {
+    _viewModel = context.watch<UserVisualizationEditionPageViewModel>();
+    return _createUi();
+  }
+
+  Widget _createUi() {
+    if (_viewModel?.doingAsyncOperation ?? false) {
+      return AppLoading();
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const CampeaoAppBar(),
@@ -177,6 +189,13 @@ class _UserVisualizationEditionPageState
 
   void onSaveButtonClick() {
     setState(() {
+      _viewModel?.updateUser(
+        widget.userVisualizationEdition.id,
+        widget.userVisualizationEdition.email,
+        widget.userVisualizationEdition.name,
+        null,
+        widget.userVisualizationEdition.isAdmin,
+      );
       _editMode = false;
     });
   }

@@ -1,3 +1,4 @@
+import 'package:caldo_cana_campeao/commons/network/network_constants.dart';
 import 'package:caldo_cana_campeao/login/login_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,11 @@ class LoginPageViewModel extends ChangeNotifier {
   void _onLoginSuccess(TokenResponse userInfos, Function afterLogin) {
     _tokenResponse = userInfos;
     saveUserInfos(userInfos);
+    CampeaoNetworkConstants.headers.update(
+      CampeaoNetworkConstants.authorizationHeader,
+      (value) => "Bearer " + userInfos.token,
+      ifAbsent: () => "Bearer " + userInfos.token,
+    );
     afterLogin();
   }
 
