@@ -10,17 +10,24 @@ import 'model/token_response.dart';
 class LoginPageViewModel extends ChangeNotifier {
   final LoginRepository _loginRepository = LoginRepository();
   bool _doingAsyncOperation = false;
-  bool _errorHapenned = false;
   TokenResponse? _tokenResponse;
 
   TokenResponse? get tokenResponse => _tokenResponse;
 
   bool get doingAsyncOperation => _doingAsyncOperation;
 
-  void doLogin(String email, String password, Function afterLogin) {
+  void doLogin(
+    String email,
+    String password,
+    Function afterLogin,
+    Function onErrorCallback,
+  ) {
     _setDoingAsyncOperation(true);
     _loginRepository
         .doLogin(LoginRequest(email, password))
+        .catchError((error, stackTrace) {
+          _onLoginError(error, onErrorCallback);
+        })
         .then((userInfos) => _onLoginSuccess(userInfos, afterLogin))
         .whenComplete(() => _setDoingAsyncOperation(false));
   }
@@ -34,6 +41,10 @@ class LoginPageViewModel extends ChangeNotifier {
       ifAbsent: () => "Bearer " + userInfos.token,
     );
     afterLogin();
+  }
+
+  void _onLoginError(Exception e, Function onErrorCallback) {
+    onErrorCallback();
   }
 
   void saveUserInfos(TokenResponse userInfos) {
