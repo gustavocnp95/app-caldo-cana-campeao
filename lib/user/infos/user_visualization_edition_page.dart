@@ -1,10 +1,12 @@
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
-import 'package:caldo_cana_campeao/custom_widgets/AppLoading.dart';
+import 'package:caldo_cana_campeao/custom_widgets/app_error.dart';
+import 'package:caldo_cana_campeao/custom_widgets/app_loading.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_visualization_edition.dart';
 import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../color/theme_colors.dart';
@@ -25,6 +27,7 @@ class _UserVisualizationEditionPageState
     extends State<UserVisualizationEditionPage> {
   UserVisualizationEditionPageViewModel? _viewModel = null;
   bool _editMode = false;
+  bool _shouldShowError = false;
   final String _editScreenTitle = "Editar cadastro";
   final String _visualizationScreenTitle = "Visualizar cadastro";
 
@@ -35,6 +38,15 @@ class _UserVisualizationEditionPageState
   }
 
   Widget _createUi() {
+    if (_shouldShowError) {
+      return AppError(
+        onActionBtnClick: () {
+          setState(() {
+            _shouldShowError = false;
+          });
+        },
+      );
+    }
     if (_viewModel?.doingAsyncOperation ?? false) {
       return AppLoading();
     }
@@ -188,14 +200,25 @@ class _UserVisualizationEditionPageState
   }
 
   void onSaveButtonClick() {
+    _viewModel?.updateUser(
+      widget.userVisualizationEdition.id,
+      widget.userVisualizationEdition.email,
+      widget.userVisualizationEdition.name,
+      null,
+      widget.userVisualizationEdition.isAdmin,
+      () => onSaveEmployeeSuccess(),
+      () => onSaveEmployeeError(),
+    );
+  }
+
+  void onSaveEmployeeError() {
     setState(() {
-      _viewModel?.updateUser(
-        widget.userVisualizationEdition.id,
-        widget.userVisualizationEdition.email,
-        widget.userVisualizationEdition.name,
-        null,
-        widget.userVisualizationEdition.isAdmin,
-      );
+      _shouldShowError = true;
+    });
+  }
+
+  void onSaveEmployeeSuccess() {
+    setState(() {
       _editMode = false;
     });
   }

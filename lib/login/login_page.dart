@@ -2,7 +2,7 @@ import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/login/login_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../custom_widgets/AppLoading.dart';
+import '../custom_widgets/app_loading.dart';
 import '../custom_widgets/campeao_elevated_button.dart';
 import '../custom_widgets/campeao_text_field.dart';
 import '../images/images.dart';
