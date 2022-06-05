@@ -125,8 +125,8 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Atenção'),
-            content: Text('Usuário ou senha incorretos.'),
+            title: const Text('Atenção'),
+            content: const Text('Usuário ou senha incorretos.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
