@@ -1,3 +1,4 @@
+import 'package:caldo_cana_campeao/commons/network/network_constants.dart';
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,5 +75,20 @@ class CampeaoSharedPreferences {
     _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userId);
     _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userIsAdmin);
     _sharedPreferences?.remove(CampeaoSharedPreferencesConstants.userEmail);
+    CampeaoNetworkConstants.removeAuthorizationHeader();
+  }
+
+  static void saveLogonInfos(
+    int id,
+    String token,
+    String email,
+    String name,
+    bool isAdmin,
+  ) {
+    CampeaoSharedPreferences.setUserId(id);
+    CampeaoSharedPreferences.setUserToken(token);
+    CampeaoSharedPreferences.setUserEmail(email);
+    CampeaoSharedPreferences.setUserName(name);
+    CampeaoSharedPreferences.setUserIsAdmin(isAdmin);
   }
 }

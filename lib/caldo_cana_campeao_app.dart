@@ -16,12 +16,7 @@ class CaldoCanaCampeaoApp extends StatelessWidget {
   Widget build(final BuildContext context) {
     String? userToken = CampeaoSharedPreferences.getUserToken();
     if (userToken != null) {
-      String userAuthorizationToken = "Bearer " + userToken;
-      CampeaoNetworkConstants.headers.update(
-        CampeaoNetworkConstants.authorizationHeader,
-        (value) => userAuthorizationToken,
-        ifAbsent: () => userAuthorizationToken,
-      );
+      CampeaoNetworkConstants.addAuthorizationHeader(userToken);
     }
     return MultiProvider(
         providers: [

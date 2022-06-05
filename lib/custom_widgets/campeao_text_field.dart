@@ -6,8 +6,10 @@ class CampeaoInputTextField extends StatefulWidget {
   final Function onTextChanged;
   final String? initialText;
   final String? hintText;
+  final String? errorText;
   final bool enabled;
   final bool hidePasswordEnabled;
+  final bool errorActivated;
 
   const CampeaoInputTextField(
       {Key? key,
@@ -15,7 +17,9 @@ class CampeaoInputTextField extends StatefulWidget {
       this.hintText,
       this.hidePasswordEnabled = false,
       this.initialText,
-      this.enabled = true})
+      this.enabled = true,
+      this.errorText,
+      this.errorActivated = false})
       : super(key: key);
 
   @override
@@ -52,6 +56,7 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
       focusNode: _textFieldFocusNode,
       style: const TextStyle(color: CampeaoColors.primaryTextColor),
       decoration: InputDecoration(
+          errorText: widget.errorActivated ? widget.errorText : null,
           filled: true,
           fillColor: _backgroundColor,
           enabledBorder: const OutlineInputBorder(
@@ -62,7 +67,10 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
           ),
           border: const OutlineInputBorder(),
           hintText: widget.hintText,
-          hintStyle: const TextStyle(color: CampeaoColors.primaryColorDark),
+          hintStyle: TextStyle(
+              color: widget.enabled
+                  ? CampeaoColors.primaryColorDark
+                  : CampeaoColors.primaryTextColor),
           suffixIcon: widget.hidePasswordEnabled
               ? createSuffixIconHidePassword()
               : null),
@@ -75,7 +83,9 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
   Widget createSuffixIconHidePassword() {
     return IconButton(
         icon: const Icon(Icons.remove_red_eye_outlined),
-        color: CampeaoColors.primaryColorDark,
+        color: widget.enabled
+            ? CampeaoColors.primaryColorDark
+            : CampeaoColors.primaryTextColor,
         onPressed: () {
           setState(() {
             _obscureText = !_obscureText;

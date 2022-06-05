@@ -6,11 +6,11 @@ import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_visualization_edition.dart';
 import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../color/theme_colors.dart';
 import '../../images/images.dart';
+import '../../login/login_page.dart';
 
 class UserVisualizationEditionPage extends StatefulWidget {
   final UserVisualizationEdition userVisualizationEdition;
@@ -25,11 +25,14 @@ class UserVisualizationEditionPage extends StatefulWidget {
 
 class _UserVisualizationEditionPageState
     extends State<UserVisualizationEditionPage> {
-  UserVisualizationEditionPageViewModel? _viewModel = null;
+  UserVisualizationEditionPageViewModel? _viewModel;
   bool _editMode = false;
   bool _shouldShowError = false;
   final String _editScreenTitle = "Editar cadastro";
   final String _visualizationScreenTitle = "Visualizar cadastro";
+  bool _shouldShowPasswordConfirmationError = false;
+  bool _shouldShowNameError = false;
+  bool _shouldShowEmailError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _UserVisualizationEditionPageState
       return AppLoading();
     }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: const CampeaoAppBar(),
       body: SingleChildScrollView(
         child: Padding(
@@ -116,11 +119,15 @@ class _UserVisualizationEditionPageState
                   onTextChanged: (String newText) {
                     setState(() {
                       widget.userVisualizationEdition.name = newText;
+                      _shouldShowNameError =
+                          !widget.userVisualizationEdition.isNameValid();
                     });
                   },
                   enabled: _editMode,
                   hintText: "Nome",
                   initialText: widget.userVisualizationEdition.name,
+                  errorActivated: _shouldShowNameError,
+                  errorText: "O nome não pode ser branco",
                 ),
               ),
               Padding(
@@ -129,11 +136,15 @@ class _UserVisualizationEditionPageState
                   onTextChanged: (String newText) {
                     setState(() {
                       widget.userVisualizationEdition.email = newText;
+                      _shouldShowEmailError =
+                          !widget.userVisualizationEdition.isEmailValid();
                     });
                   },
                   enabled: _editMode,
                   hintText: "E-mail",
                   initialText: widget.userVisualizationEdition.email,
+                  errorActivated: _shouldShowEmailError,
+                  errorText: "O e-mail não pode ser branco",
                 ),
               ),
               Visibility(
@@ -157,6 +168,55 @@ class _UserVisualizationEditionPageState
                     ],
                   ),
                 ),
+              ),
+              ExpansionTile(
+                iconColor: CampeaoColors.primaryColor,
+                textColor: CampeaoColors.primaryColor,
+                initiallyExpanded:
+                    widget.userVisualizationEdition.isNewPasswordFilled(),
+                tilePadding: EdgeInsets.zero,
+                childrenPadding: EdgeInsets.zero,
+                title: const Text('Senha'),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: CampeaoInputTextField(
+                      hidePasswordEnabled: true,
+                      onTextChanged: (String newText) {
+                        setState(() {
+                          widget.userVisualizationEdition.newPassword = newText;
+                          _shouldShowPasswordConfirmationError = !widget
+                              .userVisualizationEdition
+                              .isNewPasswordValid();
+                        });
+                      },
+                      enabled: _editMode,
+                      hintText: "Nova senha",
+                      initialText: widget.userVisualizationEdition.newPassword,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: CampeaoInputTextField(
+                      hidePasswordEnabled: true,
+                      errorText: "As senhas não conferem",
+                      errorActivated: _shouldShowPasswordConfirmationError,
+                      onTextChanged: (String newText) {
+                        setState(() {
+                          widget.userVisualizationEdition
+                              .newPasswordConfirmation = newText;
+                          _shouldShowPasswordConfirmationError = !widget
+                              .userVisualizationEdition
+                              .isNewPasswordValid();
+                        });
+                      },
+                      enabled: _editMode,
+                      hintText: "Confirmação nova senha",
+                      initialText: widget
+                          .userVisualizationEdition.newPasswordConfirmation,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -200,26 +260,123 @@ class _UserVisualizationEditionPageState
   }
 
   void onSaveButtonClick() {
-    _viewModel?.updateUser(
-      widget.userVisualizationEdition.id,
-      widget.userVisualizationEdition.email,
-      widget.userVisualizationEdition.name,
-      null,
-      widget.userVisualizationEdition.isAdmin,
-      () => onSaveEmployeeSuccess(),
-      () => onSaveEmployeeError(),
-    );
+    if (widget.userVisualizationEdition.isFieldsValid()) {
+      _viewModel?.updateUser(
+        widget.userVisualizationEdition.id,
+        widget.userVisualizationEdition.email,
+        widget.userVisualizationEdition.name,
+        widget.userVisualizationEdition.newPassword,
+        widget.userVisualizationEdition.isAdmin,
+        _onSaveEmployeeSuccess,
+        _onSaveEmployeeError,
+      );
+    } else {
+      _showInvalidInfosDialog();
+    }
   }
 
-  void onSaveEmployeeError() {
+  void _showInvalidInfosDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Atenção'),
+            content: const Text(
+                'Algum campo não está preenchido corretamente. Por favor, revise.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: CampeaoColors.primaryColorDark,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  void _onSaveEmployeeError() {
     setState(() {
       _shouldShowError = true;
     });
   }
 
-  void onSaveEmployeeSuccess() {
+  void _onSaveEmployeeSuccess() {
     setState(() {
       _editMode = false;
+      widget.userVisualizationEdition.newPassword = null;
+      widget.userVisualizationEdition.newPasswordConfirmation = null;
     });
+    if (widget.userVisualizationEdition.id ==
+        CampeaoSharedPreferences.getUserId()) {
+      _showLogoutDialog(context);
+    } else {
+      _showSuccessDialog();
+    }
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Sucesso'),
+            content: const Text(
+                'Você será deslogado para atualizar as informações de cadastro no aparelho.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  _logout(context);
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: CampeaoColors.primaryColorDark,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  void _logout(BuildContext context) {
+    CampeaoSharedPreferences.clearLogonInfos();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        ModalRoute.withName('/login'));
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Sucesso'),
+            content: const Text('Informações atualizadas!'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: CampeaoColors.primaryColorDark,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }

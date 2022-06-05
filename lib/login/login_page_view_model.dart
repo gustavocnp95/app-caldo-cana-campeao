@@ -35,11 +35,7 @@ class LoginPageViewModel extends ChangeNotifier {
   void _onLoginSuccess(TokenResponse userInfos, Function afterLogin) {
     _tokenResponse = userInfos;
     saveUserInfos(userInfos);
-    CampeaoNetworkConstants.headers.update(
-      CampeaoNetworkConstants.authorizationHeader,
-      (value) => "Bearer " + userInfos.token,
-      ifAbsent: () => "Bearer " + userInfos.token,
-    );
+    CampeaoNetworkConstants.addAuthorizationHeader(userInfos.token);
     afterLogin();
   }
 
@@ -48,11 +44,13 @@ class LoginPageViewModel extends ChangeNotifier {
   }
 
   void saveUserInfos(TokenResponse userInfos) {
-    CampeaoSharedPreferences.setUserId(userInfos.userId);
-    CampeaoSharedPreferences.setUserToken(userInfos.token);
-    CampeaoSharedPreferences.setUserEmail(userInfos.email);
-    CampeaoSharedPreferences.setUserName(userInfos.userName);
-    CampeaoSharedPreferences.setUserIsAdmin(userInfos.isAdmin);
+    CampeaoSharedPreferences.saveLogonInfos(
+      userInfos.userId,
+      userInfos.token,
+      userInfos.email,
+      userInfos.userName,
+      userInfos.isAdmin,
+    );
   }
 
   void _setDoingAsyncOperation(bool doingAsyncOperation) {

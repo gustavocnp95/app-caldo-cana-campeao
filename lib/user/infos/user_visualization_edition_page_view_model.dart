@@ -1,8 +1,8 @@
+import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_response.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_update_dto.dart';
 import 'package:caldo_cana_campeao/user/infos/user_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class UserVisualizationEditionPageViewModel extends ChangeNotifier {
   final UserRepository _repository = UserRepository();
@@ -25,7 +25,7 @@ class UserVisualizationEditionPageViewModel extends ChangeNotifier {
         .catchError((error, stackTrace) {
           _onUpdateUserError(error, onError);
         })
-        .then((userUpdated) => _onUpdateUserSuccess)
+        .then((userUpdated) => _onUpdateUserSuccess(userUpdated, onSuccess))
         .whenComplete(() => _setDoingAsyncOperation(false));
   }
 

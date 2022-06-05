@@ -75,7 +75,7 @@ class MenuPage extends StatelessWidget {
   ListView _createOptions(BuildContext context) {
     List<Widget> options = <Widget>[];
     options.add(
-      _createOption("Alterar informações de cadastro", () {
+      _createOption("Alterar informações de cadastro", () async {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -97,11 +97,7 @@ class MenuPage extends StatelessWidget {
     }
     options.add(
       _createOption("Sair da conta", () {
-        CampeaoSharedPreferences.clearLogonInfos();
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-            ModalRoute.withName('/login'));
+        _logout(context);
       }),
     );
     return ListView(
@@ -109,6 +105,14 @@ class MenuPage extends StatelessWidget {
       shrinkWrap: true,
       children: options,
     );
+  }
+
+  void _logout(BuildContext context) {
+    CampeaoSharedPreferences.clearLogonInfos();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+        ModalRoute.withName('/login'));
   }
 
   Padding _createOption(String title, Function onPressed) {
