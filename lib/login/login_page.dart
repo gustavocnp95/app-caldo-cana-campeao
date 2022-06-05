@@ -17,7 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String emailInput = "";
   String passwordInput = "";
-  bool _shouldShowError = false;
   LoginPageViewModel? viewModel;
 
   @override
@@ -27,15 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _createUi(BuildContext context) {
-    if (_shouldShowError) {
-      return AppError(
-        onActionBtnClick: () {
-          setState(() {
-            _shouldShowError = false;
-          });
-        },
-      );
-    }
     if (viewModel?.doingAsyncOperation ?? false) {
       return AppLoading();
     }
@@ -131,8 +121,31 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onLoginError() {
-    setState(() {
-      _shouldShowError = true;
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Atenção'),
+            content: Text('Usuário ou senha incorretos.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  _dismissDialog();
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: CampeaoColors.primaryColorDark,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  _dismissDialog() {
+    Navigator.pop(context);
   }
 }
