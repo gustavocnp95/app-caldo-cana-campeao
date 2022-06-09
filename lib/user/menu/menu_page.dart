@@ -1,6 +1,7 @@
 import 'package:caldo_cana_campeao/custom_widgets/campeao_app_bar.dart';
 import 'package:caldo_cana_campeao/login/login_page.dart';
 import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page.dart';
+import 'package:caldo_cana_campeao/user/listing/user_listing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -92,7 +93,14 @@ class MenuPage extends StatelessWidget {
     );
     if (CampeaoSharedPreferences.getUserIsAdmin() ?? false) {
       options.add(
-        _createOption("Perfis cadastrados", () {}),
+        _createOption("Perfis cadastrados", () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserListingPage(),
+            ),
+          );
+        }),
       );
     }
     options.add(

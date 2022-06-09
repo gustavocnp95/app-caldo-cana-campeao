@@ -1,4 +1,3 @@
-import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_response.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_update_dto.dart';
 import 'package:caldo_cana_campeao/user/infos/user_repository.dart';
