@@ -1,6 +1,6 @@
 import 'package:caldo_cana_campeao/user/infos/model/user_response.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_update_dto.dart';
-import 'package:caldo_cana_campeao/user/infos/user_repository.dart';
+import 'package:caldo_cana_campeao/user/user_repository.dart';
 import 'package:flutter/foundation.dart';
 
 class UserVisualizationEditionPageViewModel extends ChangeNotifier {

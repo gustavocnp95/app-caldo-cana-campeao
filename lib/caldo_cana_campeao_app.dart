@@ -3,6 +3,7 @@ import 'package:caldo_cana_campeao/login/login_page.dart';
 import 'package:caldo_cana_campeao/login/login_page_view_model.dart';
 import 'package:caldo_cana_campeao/home/home_page.dart';
 import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page_view_model.dart';
+import 'package:caldo_cana_campeao/user/listing/user_listing_page_view_model.dart';
 import 'package:caldo_cana_campeao/user/menu/menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,8 @@ class CaldoCanaCampeaoApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => LoginPageViewModel()),
           ChangeNotifierProvider(
-              create: (_) => UserVisualizationEditionPageViewModel())
+              create: (_) => UserVisualizationEditionPageViewModel()),
+          ChangeNotifierProvider(create: (_) => UserListingPageViewModel())
         ],
         child: MaterialApp(
           home: userToken != null ? const HomePage() : LoginPage(),
