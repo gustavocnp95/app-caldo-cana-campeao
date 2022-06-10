@@ -178,7 +178,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               _createHideAmountButton(),
-              _createAddUserButton(context),
+              Visibility(
+                  child: _createAddUserButton(context),
+                  visible: CampeaoSharedPreferences.getUserIsAdmin() ?? false),
             ],
           ),
           Padding(

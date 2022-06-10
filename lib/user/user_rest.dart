@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:caldo_cana_campeao/user/infos/model/user_update_dto.dart';
+import 'package:caldo_cana_campeao/user/register/model/user_create_dto.dart';
 import 'package:http/http.dart' as http;
 
 import '../commons/network/network_constants.dart';
@@ -43,6 +44,19 @@ class UserRest {
       throw Exception("Error when getting users");
     } else {
       return true;
+    }
+  }
+
+  Future<UserResponse> createUser(UserCreateDto userCreateDto) async {
+    final response = await http.post(
+      Uri.parse(CampeaoNetworkConstants.wsUrl + "users"),
+      headers: CampeaoNetworkConstants.headers,
+      body: jsonEncode(userCreateDto.toJson()),
+    );
+    if (response.statusCode == CampeaoNetworkConstants.statusOk) {
+      return UserResponse.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Error creating user");
     }
   }
 }

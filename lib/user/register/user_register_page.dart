@@ -1,7 +1,11 @@
+import 'package:caldo_cana_campeao/custom_widgets/app_error.dart';
+import 'package:caldo_cana_campeao/custom_widgets/app_loading.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_elevated_button.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_logo.dart';
 import 'package:caldo_cana_campeao/user/register/model/user_registration.dart';
+import 'package:caldo_cana_campeao/user/register/user_register_page_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../color/theme_colors.dart';
 import '../../commons/sharedpreferences/campeao_shared_preferences.dart';
@@ -17,6 +21,7 @@ class UserRegisterPage extends StatefulWidget {
 }
 
 class UserRegisterPageState extends State<UserRegisterPage> {
+  UserRegisterPageViewModel? viewModel;
   bool _shouldShowError = false;
   bool _shouldShowPasswordConfirmationError = false;
   bool _shouldShowNameError = false;
@@ -24,6 +29,21 @@ class UserRegisterPageState extends State<UserRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    viewModel = context.watch<UserRegisterPageViewModel>();
+
+    if (_shouldShowError) {
+      return AppError(
+        onActionBtnClick: () {
+          setState(() {
+            _shouldShowError = false;
+          });
+        },
+        actionBtnTitle: "Voltar",
+      );
+    }
+    if (viewModel?.doingAsyncOperation ?? false) {
+      return AppLoading();
+    }
     return _createUi();
   }
 
@@ -112,7 +132,7 @@ class UserRegisterPageState extends State<UserRegisterPage> {
                 maintainSize: false,
                 visible: CampeaoSharedPreferences.getUserIsAdmin() ?? false,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 24),
+                  padding: const EdgeInsets.only(bottom: 24),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Row(
@@ -138,6 +158,15 @@ class UserRegisterPageState extends State<UserRegisterPage> {
                   buttonText: "Criar usuário",
                   onPressed: () {
                     validateFields();
+                    if (widget.userRegistrationEdition.isFieldsValid()) {
+                      viewModel?.createUser(
+                          widget.userRegistrationEdition.name!,
+                          widget.userRegistrationEdition.email!,
+                          widget.userRegistrationEdition.newPassword!,
+                          widget.userRegistrationEdition.isAdmin,
+                          onCreateUserSuccess,
+                          onCreateUserError);
+                    }
                   })
             ],
           ),
@@ -158,6 +187,38 @@ class UserRegisterPageState extends State<UserRegisterPage> {
       _shouldShowNameError = !widget.userRegistrationEdition.isNameValid();
       _shouldShowPasswordConfirmationError =
           !widget.userRegistrationEdition.isNewPasswordValid();
+    });
+  }
+  
+  Future<void> onCreateUserSuccess() async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Sucesso'),
+            content: const Text('Usuário criado!'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: CampeaoColors.primaryColorDark,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
+    Navigator.pop(context);
+  }
+
+  void onCreateUserError() {
+    setState(() {
+      _shouldShowError = true;
     });
   }
 }
