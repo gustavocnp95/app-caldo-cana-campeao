@@ -1,5 +1,6 @@
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
 import 'package:caldo_cana_campeao/custom_widgets/app_loading.dart';
+import 'package:caldo_cana_campeao/custom_widgets/campeao_logo.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_visualization_edition.dart';
 import 'package:caldo_cana_campeao/user/infos/user_visualization_edition_page.dart';
 import 'package:caldo_cana_campeao/user/listing/user_listing_item.dart';
@@ -8,10 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../../color/theme_colors.dart';
 import '../../custom_widgets/app_error.dart';
 import '../../custom_widgets/campeao_app_bar.dart';
-import '../../images/images.dart';
 
 class UserListingPage extends StatefulWidget {
   @override
@@ -67,30 +66,7 @@ class _UserListingPageState extends State<UserListingPage> {
           children: [
             Align(
               alignment: Alignment.topCenter,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10,
-                      color: Colors.black38,
-                      spreadRadius: 1,
-                    )
-                  ],
-                ),
-                child: CircleAvatar(
-                  backgroundColor: CampeaoColors.primaryColor,
-                  radius: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: ClipRRect(
-                      child: Image.asset(Images.caldoCanaCampeaoLogo),
-                      borderRadius: BorderRadius.circular(1000),
-                    ),
-                  ),
-                ),
-              ),
+              child: CampeaoLogo(),
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),
@@ -147,7 +123,8 @@ class _UserListingPageState extends State<UserListingPage> {
         Fluttertoast.showToast(msg: "Falha ao deletar o usuário!");
       });
     } else {
-      Fluttertoast.showToast(msg: "Não é possível excluir seu próprio usuário.");
+      Fluttertoast.showToast(
+          msg: "Não é possível excluir seu próprio usuário.");
     }
   }
 }

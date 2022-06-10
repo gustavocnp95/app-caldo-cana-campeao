@@ -1,6 +1,7 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
+import 'package:caldo_cana_campeao/user/register/user_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -177,7 +178,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               _createHideAmountButton(),
-              _createAddUserButton(),
+              _createAddUserButton(context),
             ],
           ),
           Padding(
@@ -203,14 +204,19 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  IconButton _createAddUserButton() {
+  IconButton _createAddUserButton(BuildContext context) {
     return IconButton(
       iconSize: 25,
       icon: const Icon(
         CampeaoIcons.user_add_outline,
         color: CampeaoColors.primaryColor,
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserRegisterPage()),
+        );
+      },
     );
   }
 
