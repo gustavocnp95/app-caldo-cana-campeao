@@ -16,8 +16,8 @@ class UserVisualizationEditionPage extends StatefulWidget {
   final UserVisualizationEdition userVisualizationEdition;
 
   const UserVisualizationEditionPage(
-      {Key? key, required this.userVisualizationEdition})
-      : super(key: key);
+      {required this.userVisualizationEdition})
+      : super();
 
   @override
   State<StatefulWidget> createState() => _UserVisualizationEditionPageState();

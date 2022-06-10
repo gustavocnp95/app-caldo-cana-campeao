@@ -6,12 +6,16 @@ class UserListingItem extends StatelessWidget {
   final String userName;
   final String userEmail;
   final bool isAdmin;
+  final Function onEditUserClick;
+  final Function onDeleteUserClick;
 
   const UserListingItem(
       {required this.userId,
       required this.userName,
       required this.userEmail,
-      required this.isAdmin});
+      required this.isAdmin,
+      required this.onEditUserClick,
+      required this.onDeleteUserClick});
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +38,16 @@ class UserListingItem extends StatelessWidget {
                   iconSize: 30,
                   icon: const Icon(Icons.edit),
                   color: CampeaoColors.primaryColor,
-                  onPressed: () {}),
+                  onPressed: () {
+                    onEditUserClick(userId, userName, userEmail, isAdmin);
+                  }),
               IconButton(
                   iconSize: 30,
                   icon: const Icon(Icons.delete_forever_outlined),
                   color: CampeaoColors.primaryColor,
-                  onPressed: () {}),
+                  onPressed: () {
+                    onDeleteUserClick(userId);
+                  }),
             ],
           ),
         ),

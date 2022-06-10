@@ -12,4 +12,8 @@ class UserRepository {
   Future<List<UserResponse>> getAll() {
     return _userRest.getAll();
   }
+
+  Future<bool> deleteUser(int userId) {
+    return _userRest.deleteUser(userId);
+  }
 }

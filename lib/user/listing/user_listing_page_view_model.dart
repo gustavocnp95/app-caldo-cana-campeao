@@ -10,6 +10,30 @@ class UserListingPageViewModel extends ChangeNotifier {
 
   bool get doingAsyncOperation => _doingAsyncOperation;
 
+  void deleteUser(int userId, Function onSuccess, Function onError) {
+    _setDoingAsyncOperation(true);
+    _repository
+        .deleteUser(userId)
+        .catchError((error, stackTrace) {
+          _onDeleteUserError(error, onError);
+        })
+        .then((_) => _onDeleteUserSuccess(userId, onSuccess))
+        .whenComplete(() => _setDoingAsyncOperation(false));
+  }
+
+  void _onDeleteUserSuccess(
+    int userId,
+    Function onSucessCallback,
+  ) {
+    users.removeWhere((element) => element.id == userId);
+    notifyListeners();
+    onSucessCallback();
+  }
+
+  void _onDeleteUserError(Exception e, Function onErrorCallback) {
+    onErrorCallback();
+  }
+
   void fetchUsers(
     Function onSuccess,
     Function onError,
@@ -28,7 +52,7 @@ class UserListingPageViewModel extends ChangeNotifier {
     List<UserResponse> usersResponse,
     Function onSucessCallback,
   ) {
-     users = usersResponse;
+    users = usersResponse;
     notifyListeners();
     onSucessCallback();
   }

@@ -33,4 +33,16 @@ class UserRest {
       throw Exception("Error when getting users");
     }
   }
+
+  Future<bool> deleteUser(int userId) async {
+    final response = await http.delete(
+      Uri.parse(CampeaoNetworkConstants.wsUrl + "users/" + userId.toString()),
+      headers: CampeaoNetworkConstants.headers,
+    );
+    if (response.statusCode != CampeaoNetworkConstants.statusOk) {
+      throw Exception("Error when getting users");
+    } else {
+      return true;
+    }
+  }
 }
