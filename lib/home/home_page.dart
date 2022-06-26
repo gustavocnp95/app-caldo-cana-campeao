@@ -1,6 +1,7 @@
 import 'package:caldo_cana_campeao/color/theme_colors.dart';
 import 'package:caldo_cana_campeao/commons/icons/campeao_icons_icons.dart';
 import 'package:caldo_cana_campeao/commons/sharedpreferences/campeao_shared_preferences.dart';
+import 'package:caldo_cana_campeao/products/listing/products_listing_page.dart';
 import 'package:caldo_cana_campeao/user/register/user_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
         child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
           _createHeader(context),
           _createReportAbstract(),
-          _createMenuOptions(),
+          _createMenuOptions(context),
         ]),
       ),
     );
@@ -59,7 +60,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Padding _createMenuOptions() {
+  Padding _createMenuOptions(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8, top: 40),
       child: GridView(
@@ -70,12 +71,12 @@ class HomePage extends StatelessWidget {
             crossAxisSpacing: 55,
             mainAxisSpacing: 32,
             childAspectRatio: 1.5),
-        children: _createOptionsList(),
+        children: _createOptionsList(context),
       ),
     );
   }
 
-  List<Widget> _createOptionsList() {
+  List<Widget> _createOptionsList(BuildContext context) {
     List<Widget> options = <Widget>[];
     options.add(_createOption("Ordem de Compra", () {
       Fluttertoast.showToast(msg: "soon, very soon!");
@@ -88,7 +89,10 @@ class HomePage extends StatelessWidget {
     }));
     if (CampeaoSharedPreferences.getUserIsAdmin() ?? false) {
       options.add(_createOption("Produtos", () {
-        Fluttertoast.showToast(msg: "soon, very soon!");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProductsListingPage()),
+        );
       }));
     }
     return options;
