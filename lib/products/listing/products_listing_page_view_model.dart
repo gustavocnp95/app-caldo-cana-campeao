@@ -30,7 +30,7 @@ class ProductsListingPageViewModel extends ChangeNotifier {
   ) {
     products = productsResponse;
     notifyListeners();
-    onSucessCallback();
+    onSucessCallback(productsResponse);
   }
 
   void _onFetchProductsError(Exception e, Function onErrorCallback) {
