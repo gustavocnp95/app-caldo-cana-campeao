@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:caldo_cana_campeao/commons/campeao_json.dart';
 import 'package:caldo_cana_campeao/user/infos/model/user_update_dto.dart';
 import 'package:caldo_cana_campeao/user/register/model/user_create_dto.dart';
 import 'package:http/http.dart' as http;
@@ -12,10 +11,10 @@ class UserRest {
     final response = await http.put(
       Uri.parse(CampeaoNetworkConstants.wsUrl + "users"),
       headers: CampeaoNetworkConstants.headers,
-      body: jsonEncode(userUpdateDto.toJson()),
+      body: CampeaoJson.encode(userUpdateDto.toJson()),
     );
     if (response.statusCode == CampeaoNetworkConstants.statusOk) {
-      return UserResponse.fromJson(jsonDecode(response.body));
+      return UserResponse.fromJson(CampeaoJson.decode(response.bodyBytes));
     } else {
       throw Exception("Error updating user");
     }
@@ -27,7 +26,7 @@ class UserRest {
       headers: CampeaoNetworkConstants.headers,
     );
     if (response.statusCode == CampeaoNetworkConstants.statusOk) {
-      final Iterable l = json.decode(response.body);
+      final Iterable l = CampeaoJson.decode(response.bodyBytes);
       return List<UserResponse>.from(
           l.map((userJson) => UserResponse.fromJson(userJson)));
     } else {
@@ -51,10 +50,10 @@ class UserRest {
     final response = await http.post(
       Uri.parse(CampeaoNetworkConstants.wsUrl + "users"),
       headers: CampeaoNetworkConstants.headers,
-      body: jsonEncode(userCreateDto.toJson()),
+      body: CampeaoJson.encode(userCreateDto.toJson()),
     );
     if (response.statusCode == CampeaoNetworkConstants.statusOk) {
-      return UserResponse.fromJson(jsonDecode(response.body));
+      return UserResponse.fromJson(CampeaoJson.decode(response.bodyBytes));
     } else {
       throw Exception("Error creating user");
     }

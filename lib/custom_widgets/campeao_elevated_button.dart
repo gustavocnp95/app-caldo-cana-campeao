@@ -7,19 +7,23 @@ class CampeaoElevatedButton extends StatelessWidget {
   final bool alignToLeft;
   final Function onPressed;
   final double fontSize;
+  final double minHeight;
+  final bool isSelected;
 
   const CampeaoElevatedButton(
       {Key? key,
       required this.buttonText,
       required this.onPressed,
       this.alignToLeft = false,
-      this.fontSize = 14})
+      this.fontSize = 14,
+      this.minHeight = 55,
+      this.isSelected = false})
       : super(key: key);
 
   @override
   Widget build(final BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 55),
+      constraints: BoxConstraints(minHeight: minHeight),
       child: ElevatedButton(
         onPressed: () {
           onPressed();
@@ -32,7 +36,7 @@ class CampeaoElevatedButton extends StatelessWidget {
           ),
         ),
         style: ElevatedButton.styleFrom(
-            primary: CampeaoColors.primaryColor,
+            primary: isSelected ? CampeaoColors.primaryColorDark : CampeaoColors.primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             )),
