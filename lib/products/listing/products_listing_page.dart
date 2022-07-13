@@ -70,6 +70,7 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 24),
@@ -81,84 +82,91 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                 ),
               ),
             ),
-            CampeaoInputTextField(
-              hintText: "Pesquisar produto",
-              initialText: _searchProductText,
-              onTextChanged: (newText) {
-                setState(() {
-                  _searchProductText = newText;
-                  _refreshShowedItemsList(_viewModel!.products);
-                });
-              },
-              prefixIconButton: IconButton(
-                icon: const Icon(Icons.search),
-                color: CampeaoColors.primaryColorDark,
-                onPressed: () {},
-              ),
-              suffixIconButton: IconButton(
-                icon: const Icon(Icons.close_rounded),
-                color: CampeaoColors.primaryColor,
-                onPressed: () {
+            Padding(
+              padding: const EdgeInsets.only(top: 32),
+              child: CampeaoInputTextField(
+                hintText: "Pesquisar produto",
+                initialText: _searchProductText,
+                onTextChanged: (newText) {
                   setState(() {
-                    _searchProductText = null;
+                    _searchProductText = newText;
+                    _refreshShowedItemsList(_viewModel!.products);
                   });
                 },
+                prefixIconButton: IconButton(
+                  icon: const Icon(Icons.search),
+                  color: CampeaoColors.primaryColorDark,
+                  onPressed: () {},
+                ),
+                suffixIconButton: IconButton(
+                  icon: const Icon(Icons.close_rounded),
+                  color: CampeaoColors.primaryColor,
+                  onPressed: () {
+                    setState(() {
+                      _searchProductText = null;
+                      _refreshShowedItemsList(_viewModel!.products);
+                    });
+                  },
+                ),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: CampeaoElevatedButton(
-                    buttonText: "Composto",
-                    onPressed: () {
-                      setState(() {
-                        _elevatedCompostoButtonSelected =
-                            !_elevatedCompostoButtonSelected;
-                        _refreshShowedItemsList(_viewModel!.products);
-                      });
-                    },
-                    fontSize: 14,
-                    minHeight: 20,
-                    isSelected: _elevatedCompostoButtonSelected,
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 9),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Row(
+                children: [
+                  Expanded(
                     child: CampeaoElevatedButton(
-                      buttonText: "Final",
+                      buttonText: "Composto",
                       onPressed: () {
                         setState(() {
-                          _elevatedFinalButtonSelected =
-                              !_elevatedFinalButtonSelected;
+                          _elevatedCompostoButtonSelected =
+                              !_elevatedCompostoButtonSelected;
                           _refreshShowedItemsList(_viewModel!.products);
                         });
                       },
                       fontSize: 14,
                       minHeight: 20,
-                      isSelected: _elevatedFinalButtonSelected,
+                      isSelected: _elevatedCompostoButtonSelected,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 9),
-                    child: CampeaoElevatedButton(
-                      buttonText: "Matéria-Prima",
-                      onPressed: () {
-                        setState(() {
-                          _elevatedMateriaPrimaButtonSelected =
-                              !_elevatedMateriaPrimaButtonSelected;
-                          _refreshShowedItemsList(_viewModel!.products);
-                        });
-                      },
-                      fontSize: 14,
-                      minHeight: 20,
-                      isSelected: _elevatedMateriaPrimaButtonSelected,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 9),
+                      child: CampeaoElevatedButton(
+                        buttonText: "Final",
+                        onPressed: () {
+                          setState(() {
+                            _elevatedFinalButtonSelected =
+                                !_elevatedFinalButtonSelected;
+                            _refreshShowedItemsList(_viewModel!.products);
+                          });
+                        },
+                        fontSize: 14,
+                        minHeight: 20,
+                        isSelected: _elevatedFinalButtonSelected,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 9),
+                      child: CampeaoElevatedButton(
+                        buttonText: "Matéria-Prima",
+                        onPressed: () {
+                          setState(() {
+                            _elevatedMateriaPrimaButtonSelected =
+                                !_elevatedMateriaPrimaButtonSelected;
+                            _refreshShowedItemsList(_viewModel!.products);
+                          });
+                        },
+                        fontSize: 14,
+                        minHeight: 20,
+                        isSelected: _elevatedMateriaPrimaButtonSelected,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Container(
               padding: const EdgeInsets.only(top: 20),
