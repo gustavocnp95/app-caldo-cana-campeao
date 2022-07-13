@@ -10,17 +10,21 @@ class CampeaoInputTextField extends StatefulWidget {
   final bool enabled;
   final bool hidePasswordEnabled;
   final bool errorActivated;
+  final IconButton? suffixIconButton;
+  final IconButton? prefixIconButton;
 
-  const CampeaoInputTextField(
-      {Key? key,
-      required this.onTextChanged,
-      this.hintText,
-      this.hidePasswordEnabled = false,
-      this.initialText,
-      this.enabled = true,
-      this.errorText,
-      this.errorActivated = false})
-      : super(key: key);
+  const CampeaoInputTextField({
+    Key? key,
+    required this.onTextChanged,
+    this.hintText,
+    this.hidePasswordEnabled = false,
+    this.initialText,
+    this.enabled = true,
+    this.errorText,
+    this.errorActivated = false,
+    this.prefixIconButton,
+    this.suffixIconButton,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CampeaoInputTextFieldState();
@@ -49,6 +53,9 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
 
   @override
   Widget build(final BuildContext context) {
+    if (widget.initialText == null) {
+      _fieldController.text = "";
+    }
     return TextField(
       enabled: widget.enabled,
       controller: _fieldController,
@@ -71,9 +78,10 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
               color: widget.enabled
                   ? CampeaoColors.primaryColorDark
                   : CampeaoColors.primaryTextColor),
+          prefixIcon: widget.prefixIconButton,
           suffixIcon: widget.hidePasswordEnabled
               ? createSuffixIconHidePassword()
-              : null),
+              : widget.suffixIconButton),
       onChanged: (newText) {
         widget.onTextChanged(newText);
       },

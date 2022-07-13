@@ -1,5 +1,6 @@
 import 'package:caldo_cana_campeao/commons/iterable_extensions.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_elevated_button.dart';
+import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/products/listing/products_listing_page_view_model.dart';
 import 'package:caldo_cana_campeao/products/model/product_response.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
   bool _elevatedFinalButtonSelected = false;
   bool _elevatedCompostoButtonSelected = false;
   bool _elevatedMateriaPrimaButtonSelected = false;
+  String? _searchProductText;
   List<Widget> _showedItemsList = List.empty();
 
   @override
@@ -79,6 +81,30 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                 ),
               ),
             ),
+            CampeaoInputTextField(
+              hintText: "Pesquisar produto",
+              initialText: _searchProductText,
+              onTextChanged: (newText) {
+                setState(() {
+                  _searchProductText = newText;
+                  _refreshShowedItemsList(_viewModel!.products);
+                });
+              },
+              prefixIconButton: IconButton(
+                icon: const Icon(Icons.search),
+                color: CampeaoColors.primaryColorDark,
+                onPressed: () {},
+              ),
+              suffixIconButton: IconButton(
+                icon: const Icon(Icons.close_rounded),
+                color: CampeaoColors.primaryColor,
+                onPressed: () {
+                  setState(() {
+                    _searchProductText = null;
+                  });
+                },
+              ),
+            ),
             Row(
               children: [
                 Expanded(
@@ -86,7 +112,8 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                     buttonText: "Composto",
                     onPressed: () {
                       setState(() {
-                        _elevatedCompostoButtonSelected = !_elevatedCompostoButtonSelected;
+                        _elevatedCompostoButtonSelected =
+                            !_elevatedCompostoButtonSelected;
                         _refreshShowedItemsList(_viewModel!.products);
                       });
                     },
@@ -102,7 +129,8 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                       buttonText: "Final",
                       onPressed: () {
                         setState(() {
-                          _elevatedFinalButtonSelected = !_elevatedFinalButtonSelected;
+                          _elevatedFinalButtonSelected =
+                              !_elevatedFinalButtonSelected;
                           _refreshShowedItemsList(_viewModel!.products);
                         });
                       },
@@ -119,7 +147,8 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                       buttonText: "Matéria-Prima",
                       onPressed: () {
                         setState(() {
-                          _elevatedMateriaPrimaButtonSelected = !_elevatedMateriaPrimaButtonSelected;
+                          _elevatedMateriaPrimaButtonSelected =
+                              !_elevatedMateriaPrimaButtonSelected;
                           _refreshShowedItemsList(_viewModel!.products);
                         });
                       },
@@ -176,13 +205,23 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
             return;
           }
         }
-        itemsList.add(
-          _createProductCategoryItem(category),
-        );
+        List<Widget> productsItems = [];
         for (var product in products) {
+          if (_searchProductText == null ||
+              _searchProductText!.isEmpty ||
+              product.name
+                  .toUpperCase()
+                  .contains(_searchProductText!.toUpperCase())) {
+            productsItems.add(
+              _createProductItem(product),
+            );
+          }
+        }
+        if (productsItems.isNotEmpty) {
           itemsList.add(
-            _createProductItem(product),
+            _createProductCategoryItem(category),
           );
+          itemsList.addAll(productsItems);
         }
       },
     );
