@@ -23,6 +23,7 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
   bool _elevatedFinalButtonSelected = false;
   bool _elevatedCompostoButtonSelected = false;
   bool _elevatedMateriaPrimaButtonSelected = false;
+  bool _clearSearchText = false;
   String? _searchProductText;
   List<Widget> _showedItemsList = List.empty();
 
@@ -87,8 +88,10 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
               child: CampeaoInputTextField(
                 hintText: "Pesquisar produto",
                 initialText: _searchProductText,
+                clearText: _clearSearchText,
                 onTextChanged: (newText) {
                   setState(() {
+                    _clearSearchText = false;
                     _searchProductText = newText;
                     _refreshShowedItemsList(_viewModel!.products);
                   });
@@ -104,6 +107,7 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                   onPressed: () {
                     setState(() {
                       _searchProductText = null;
+                      _clearSearchText = true;
                       _refreshShowedItemsList(_viewModel!.products);
                     });
                   },

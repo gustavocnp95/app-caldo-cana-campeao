@@ -10,6 +10,7 @@ class CampeaoInputTextField extends StatefulWidget {
   final bool enabled;
   final bool hidePasswordEnabled;
   final bool errorActivated;
+  final bool clearText;
   final IconButton? suffixIconButton;
   final IconButton? prefixIconButton;
 
@@ -24,6 +25,7 @@ class CampeaoInputTextField extends StatefulWidget {
     this.errorActivated = false,
     this.prefixIconButton,
     this.suffixIconButton,
+    this.clearText = false,
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
 
   @override
   Widget build(final BuildContext context) {
-    if (widget.initialText == null) {
+    if (widget.clearText) {
       _fieldController.text = "";
     }
     return TextField(
