@@ -1,3 +1,5 @@
+import 'package:caldo_cana_campeao/custom_widgets/campeao_dropdown.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/product_type.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +23,20 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
 
   Widget _createUi() {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: const CampeaoAppBar(),
-        body: SingleChildScrollView(child: Container()));
+      resizeToAvoidBottomInset: true,
+      appBar: const CampeaoAppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+            child: CampeaoDropdown(
+              dropdownValue: widget.productVisualization.productType,
+              values: ProductType.getAvailableTypes(),
+            ),),
+          ],
+        ),
+      ),
+    );
   }
 }
