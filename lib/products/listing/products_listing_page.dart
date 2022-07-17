@@ -3,6 +3,8 @@ import 'package:caldo_cana_campeao/custom_widgets/campeao_elevated_button.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/products/listing/products_listing_page_view_model.dart';
 import 'package:caldo_cana_campeao/products/model/product_response.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
+import 'package:caldo_cana_campeao/products/visualization/product_visualization_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -33,11 +35,11 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
     _viewModel =
         Provider.of<ProductsListingPageViewModel>(context, listen: false);
     Future.delayed(Duration.zero, () {
-      tryToFetchProducts();
+      _tryToFetchProducts();
     });
   }
 
-  void tryToFetchProducts() {
+  void _tryToFetchProducts() {
     _viewModel?.fetchProducts((List<ProductResponse> productsResponse) {
       _onFetchProductsSuccess(productsResponse);
     }, () {
@@ -57,7 +59,7 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
         onActionBtnClick: () {
           setState(() {
             _shouldShowError = false;
-            tryToFetchProducts();
+            _tryToFetchProducts();
           });
         },
       );
@@ -124,10 +126,10 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
                     ),
                   ),
                   FloatingActionButton(
+                    heroTag: "btnAddProduct",
                     backgroundColor: CampeaoColors.primaryColor,
                     child: const Icon(Icons.add),
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -266,44 +268,61 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
         _elevatedFinalButtonSelected;
   }
 
-  Row _createProductItem(ProductResponse product) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            product.name,
-            style: const TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Text(
-            "${NumberFormat.decimalPattern("pt_BR").format(product.qtt)} ${product.unMeasure.toUpperCase()}",
-            style: const TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              NumberFormat.simpleCurrency(locale: "pt_BR")
-                  .format(product.saleValue),
+  InkWell _createProductItem(ProductResponse product) {
+    return InkWell(
+      onTap: () {
+        _onProductItemClicked();
+      },
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              product.name,
               style: const TextStyle(
                 fontSize: 18,
               ),
             ),
-            IconButton(
-                iconSize: 30,
-                icon: const Icon(Icons.edit),
-                color: CampeaoColors.primaryColor,
-                onPressed: () {}),
-          ],
-        ),
-      ],
+          ),
+          Expanded(
+            child: Text(
+              "${NumberFormat.decimalPattern("pt_BR").format(product.qtt)} ${product.unMeasure.toUpperCase()}",
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                NumberFormat.simpleCurrency(locale: "pt_BR")
+                    .format(product.saleValue),
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              IconButton(
+                  iconSize: 30,
+                  icon: const Icon(Icons.edit),
+                  color: CampeaoColors.primaryColor,
+                  onPressed: () {}),
+            ],
+          ),
+        ],
+      ),
     );
+  }
+
+  void _onProductItemClicked() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductVisualizatioPage(
+          productVisualization: ProductVisualization(),
+        ),
+      ),
+    );
+    _tryToFetchProducts();
   }
 
   Padding _createProductCategoryItem(String category) {
