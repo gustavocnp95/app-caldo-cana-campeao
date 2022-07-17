@@ -7,9 +7,14 @@ import 'dropdown_item.dart';
 class CampeaoDropdown extends StatefulWidget {
   DropdownItem? dropdownValue;
   List<DropdownItem> values;
+  String? hint;
 
-  CampeaoDropdown({Key? key, required this.dropdownValue, required this.values})
-      : super(key: key);
+  CampeaoDropdown({
+    Key? key,
+    required this.dropdownValue,
+    required this.values,
+    this.hint,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CampeaoDropdownState();
@@ -30,6 +35,15 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<DropdownItem>(
+          hint: widget.hint != null
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    widget.hint!,
+                    style: const TextStyle(color: CampeaoColors.primaryColor),
+                  ),
+                )
+              : null,
           value: widget.dropdownValue,
           icon: const Icon(
             Icons.keyboard_arrow_down,
