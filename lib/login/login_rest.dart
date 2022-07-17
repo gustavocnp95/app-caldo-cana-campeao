@@ -4,6 +4,7 @@ import 'package:caldo_cana_campeao/commons/network/network_constants.dart';
 import 'package:caldo_cana_campeao/login/model/token_response.dart';
 import 'package:http/http.dart' as http;
 
+import '../commons/campeao_json.dart';
 import 'model/login_request.dart';
 
 class LoginRest {
@@ -14,7 +15,7 @@ class LoginRest {
       body: jsonEncode(loginRequest.toJson()),
     );
     if (response.statusCode == CampeaoNetworkConstants.statusOk) {
-      return TokenResponse.fromJson(jsonDecode(response.body));
+      return TokenResponse.fromJson(CampeaoJson.decode(response.bodyBytes));
     } else {
       throw Exception("teste");
     }

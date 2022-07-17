@@ -5,6 +5,7 @@ import 'package:caldo_cana_campeao/products/listing/products_listing_page.dart';
 import 'package:caldo_cana_campeao/user/register/user_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:badges/badges.dart';
 
 import '../user/menu/menu_page.dart';
 
@@ -77,10 +78,23 @@ class HomePage extends StatelessWidget {
   }
 
   List<Widget> _createOptionsList(BuildContext context) {
+  
     List<Widget> options = <Widget>[];
-    options.add(_createOption("Ordem de Compra", () {
+    options.add(Badge(
+      showBadge: true,
+      padding: const EdgeInsets.all(3),
+      elevation: 0,
+      borderSide: const BorderSide(width: 1, color: CampeaoColors.primaryColorDark),
+      position: BadgePosition.topEnd(end: 8, top: 8),
+      badgeColor: Colors.white,
+      badgeContent: const Text(
+        '10',
+        style: TextStyle(color: CampeaoColors.primaryColor, fontWeight: FontWeight.bold, fontSize: 15),
+      ),
+      child:_createOption("Ordem de Compra", () {
       Fluttertoast.showToast(msg: "soon, very soon!");
-    }));
+      })
+    ));
     options.add(_createOption("Novo Pedido", () {
       Fluttertoast.showToast(msg: "soon, very soon!");
     }));
@@ -113,6 +127,7 @@ class HomePage extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             title,
+            textAlign: TextAlign.center,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
