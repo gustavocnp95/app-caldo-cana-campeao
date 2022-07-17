@@ -67,11 +67,14 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
 
   Widget _createUi() {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: const CampeaoAppBar(),
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 24),
@@ -85,33 +88,48 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 32),
-              child: CampeaoInputTextField(
-                hintText: "Pesquisar produto",
-                initialText: _searchProductText,
-                clearText: _clearSearchText,
-                onTextChanged: (newText) {
-                  setState(() {
-                    _clearSearchText = false;
-                    _searchProductText = newText;
-                    _refreshShowedItemsList(_viewModel!.products);
-                  });
-                },
-                prefixIconButton: IconButton(
-                  icon: const Icon(Icons.search),
-                  color: CampeaoColors.primaryColorDark,
-                  onPressed: () {},
-                ),
-                suffixIconButton: IconButton(
-                  icon: const Icon(Icons.close_rounded),
-                  color: CampeaoColors.primaryColor,
-                  onPressed: () {
-                    setState(() {
-                      _searchProductText = null;
-                      _clearSearchText = true;
-                      _refreshShowedItemsList(_viewModel!.products);
-                    });
-                  },
-                ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: CampeaoInputTextField(
+                        hintText: "Pesquisar produto",
+                        initialText: _searchProductText,
+                        clearText: _clearSearchText,
+                        onTextChanged: (newText) {
+                          setState(() {
+                            _clearSearchText = false;
+                            _searchProductText = newText;
+                            _refreshShowedItemsList(_viewModel!.products);
+                          });
+                        },
+                        prefixIconButton: IconButton(
+                          icon: const Icon(Icons.search),
+                          color: CampeaoColors.primaryColorDark,
+                          onPressed: () {},
+                        ),
+                        suffixIconButton: IconButton(
+                          icon: const Icon(Icons.close_rounded),
+                          color: CampeaoColors.primaryColor,
+                          onPressed: () {
+                            setState(() {
+                              _searchProductText = null;
+                              _clearSearchText = true;
+                              _refreshShowedItemsList(_viewModel!.products);
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  FloatingActionButton(
+                    backgroundColor: CampeaoColors.primaryColor,
+                    child: const Icon(Icons.add),
+                    onPressed: () {
+                    },
+                  ),
+                ],
               ),
             ),
             Padding(
