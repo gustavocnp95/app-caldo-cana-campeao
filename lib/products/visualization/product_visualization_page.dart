@@ -1,9 +1,13 @@
 import 'package:caldo_cana_campeao/custom_widgets/campeao_dropdown.dart';
+import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_type.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/product_unit_measure.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../../commons/decimal_formatter.dart';
 import '../../custom_widgets/campeao_app_bar.dart';
 import 'model/product_category.dart';
 
@@ -31,6 +35,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
           padding: const EdgeInsets.only(left: 8, right: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Padding(
                 padding: EdgeInsets.only(top: 24),
@@ -54,7 +59,9 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                       values: ProductType.getAvailableTypes(),
                     ),
                   ),
-                  Container(padding: EdgeInsets.only(left: 4, right: 4),),
+                  Container(
+                    padding: const EdgeInsets.only(left: 4, right: 4),
+                  ),
                   Expanded(
                     child: CampeaoDropdown(
                       hint: "Categoria do Produto",
@@ -67,6 +74,72 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                     ),
                   ),
                 ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CampeaoInputTextField(
+                        hintText: "Nome do produto",
+                        onTextChanged: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CampeaoInputTextField(
+                        hintText: "Quantidade",
+                        onTextChanged: () {},
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 4, right: 4),
+                    ),
+                    Expanded(
+                      child: CampeaoDropdown(
+                        dropdownValue: widget.productVisualization.unitMeasure,
+                        values: ProductUnitMeasure.getAvailableUnits(),
+                        hint: "Unidade de Medida",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CampeaoInputTextField(
+                        hintText: "Compra",
+                        prefixText: "R\$",
+                        textInputType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        textInputFormatters: [DecimalFormatter()],
+                        onTextChanged: (newText) {},
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 4, right: 4),
+                    ),
+                    Expanded(
+                      child: CampeaoInputTextField(
+                        hintText: "Venda",
+                        prefixText: "R\$",
+                        textInputType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        textInputFormatters: [DecimalFormatter()],
+                        onTextChanged: () {},
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

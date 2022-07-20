@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../color/theme_colors.dart';
 
@@ -11,22 +12,28 @@ class CampeaoInputTextField extends StatefulWidget {
   final bool hidePasswordEnabled;
   final bool errorActivated;
   final bool clearText;
+  final String? prefixText;
   final IconButton? suffixIconButton;
   final IconButton? prefixIconButton;
+  final TextInputType textInputType;
+  final List<TextInputFormatter> textInputFormatters;
 
-  const CampeaoInputTextField({
-    Key? key,
-    required this.onTextChanged,
-    this.hintText,
-    this.hidePasswordEnabled = false,
-    this.initialText,
-    this.enabled = true,
-    this.errorText,
-    this.errorActivated = false,
-    this.prefixIconButton,
-    this.suffixIconButton,
-    this.clearText = false,
-  }) : super(key: key);
+  const CampeaoInputTextField(
+      {Key? key,
+      required this.onTextChanged,
+      this.hintText,
+      this.hidePasswordEnabled = false,
+      this.initialText,
+      this.enabled = true,
+      this.errorText,
+      this.errorActivated = false,
+      this.prefixIconButton,
+      this.suffixIconButton,
+      this.clearText = false,
+      this.textInputType = TextInputType.text,
+      this.textInputFormatters = const [],
+      this.prefixText})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CampeaoInputTextFieldState();
@@ -58,35 +65,50 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
     if (widget.clearText) {
       _fieldController.text = "";
     }
-    return TextField(
-      enabled: widget.enabled,
-      controller: _fieldController,
-      obscureText: _obscureText,
-      focusNode: _textFieldFocusNode,
-      style: const TextStyle(color: CampeaoColors.primaryTextColor),
-      decoration: InputDecoration(
-          errorText: widget.errorActivated ? widget.errorText : null,
-          filled: true,
-          fillColor: _backgroundColor,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: CampeaoColors.primaryColorDark),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: CampeaoColors.primaryColorDark),
-          ),
-          border: const OutlineInputBorder(),
-          hintText: widget.hintText,
-          hintStyle: TextStyle(
-              color: widget.enabled
-                  ? CampeaoColors.primaryColorDark
-                  : CampeaoColors.primaryTextColor),
-          prefixIcon: widget.prefixIconButton,
-          suffixIcon: widget.hidePasswordEnabled
-              ? createSuffixIconHidePassword()
-              : widget.suffixIconButton),
-      onChanged: (newText) {
-        widget.onTextChanged(newText);
-      },
+    return SizedBox(
+      height: 55,
+      child: TextField(
+        keyboardType: widget.textInputType,
+        inputFormatters: widget.textInputFormatters,
+        textAlign: TextAlign.start,
+        enabled: widget.enabled,
+        controller: _fieldController,
+        obscureText: _obscureText,
+        focusNode: _textFieldFocusNode,
+        style: const TextStyle(
+            color: CampeaoColors.primaryTextColor, fontSize: 15),
+        decoration: InputDecoration(
+            errorText: widget.errorActivated ? widget.errorText : null,
+            filled: true,
+            fillColor: _backgroundColor,
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(color: CampeaoColors.primaryColor),
+            ),
+            focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderSide: BorderSide(color: CampeaoColors.primaryColorDark),
+            ),
+            border: const OutlineInputBorder(),
+            hintText: widget.hintText,
+            hintStyle: TextStyle(
+                color: widget.enabled
+                    ? CampeaoColors.primaryColor
+                    : CampeaoColors.primaryTextColor),
+            prefixIcon: widget.prefixText == null
+                ? widget.prefixIconButton
+                : Padding(
+                    padding: const EdgeInsets.only(left: 5, right: 3),
+                    child: Text(widget.prefixText!),
+                  ),
+            prefixIconConstraints: const BoxConstraints(),
+            suffixIcon: widget.hidePasswordEnabled
+                ? createSuffixIconHidePassword()
+                : widget.suffixIconButton),
+        onChanged: (newText) {
+          widget.onTextChanged(newText);
+        },
+      ),
     );
   }
 

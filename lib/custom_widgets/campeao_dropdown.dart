@@ -24,6 +24,7 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
   @override
   Widget build(final BuildContext context) {
     return Container(
+      height: 55,
       decoration: const ShapeDecoration(
         shape: RoundedRectangleBorder(
           side: BorderSide(
@@ -35,12 +36,13 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<DropdownItem>(
+          isExpanded: true,
           hint: widget.hint != null
               ? Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     widget.hint!,
-                    style: const TextStyle(color: CampeaoColors.primaryColor),
+                    style: const TextStyle(color: CampeaoColors.primaryColor, fontSize: 15),
                   ),
                 )
               : null,
@@ -50,7 +52,7 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
             color: CampeaoColors.primaryColor,
           ),
           elevation: 16,
-          style: const TextStyle(color: CampeaoColors.primaryColor),
+          style: const TextStyle(color: CampeaoColors.primaryTextColor),
           borderRadius: BorderRadius.circular(15),
           onChanged: (DropdownItem? item) {
             setState(() {
