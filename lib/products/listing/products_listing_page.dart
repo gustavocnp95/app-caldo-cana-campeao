@@ -3,6 +3,7 @@ import 'package:caldo_cana_campeao/custom_widgets/campeao_elevated_button.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/products/listing/products_listing_page_view_model.dart';
 import 'package:caldo_cana_campeao/products/model/product_response.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/product_category.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
 import 'package:caldo_cana_campeao/products/visualization/product_visualization_page.dart';
 import 'package:flutter/material.dart';

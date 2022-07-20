@@ -1,13 +1,16 @@
 import 'package:caldo_cana_campeao/custom_widgets/campeao_dropdown.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/category_response.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_type.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_unit_measure.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:caldo_cana_campeao/products/visualization/product_visualization_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../commons/decimal_formatter.dart';
+import '../../custom_widgets/app_error.dart';
+import '../../custom_widgets/app_loading.dart';
 import '../../custom_widgets/campeao_app_bar.dart';
 import 'model/product_category.dart';
 
@@ -21,8 +24,37 @@ class ProductVisualizatioPage extends StatefulWidget {
 }
 
 class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
+  ProductsVisualizationPageViewModel? _viewModel;
+  bool _shouldShowError = false;
+  List<ProductCategory> categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel =
+        Provider.of<ProductsVisualizationPageViewModel>(context, listen: false);
+    Future.delayed(Duration.zero, () {
+      _tryToFetchCategories();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<ProductsVisualizationPageViewModel>();
+    if (_viewModel?.doingAsyncOperation ?? false) {
+      return AppLoading();
+    }
+    if (_shouldShowError) {
+      return AppError(
+        actionBtnTitle: "Tentar novamente",
+        onActionBtnClick: () {
+          setState(() {
+            _shouldShowError = false;
+            _tryToFetchCategories();
+          });
+        },
+      );
+    }
     return _createUi();
   }
 
@@ -67,10 +99,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                       hint: "Categoria do Produto",
                       dropdownValue:
                           widget.productVisualization.productCategory,
-                      values: [
-                        ProductCategory(1, "Categoria 1"),
-                        ProductCategory(2, "Categoria 2")
-                      ],
+                      values: categories,
                     ),
                   ),
                 ],
@@ -82,7 +111,10 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                     Expanded(
                       child: CampeaoInputTextField(
                         hintText: "Nome do produto",
-                        onTextChanged: () {},
+                        onTextChanged: (newText) {
+                          widget.productVisualization.productDescription =
+                              newText;
+                        },
                       ),
                     ),
                   ],
@@ -94,8 +126,12 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                   children: [
                     Expanded(
                       child: CampeaoInputTextField(
+                        textInputType: TextInputType.number,
+                        textInputFormatters: [DecimalFormatter()],
                         hintText: "Quantidade",
-                        onTextChanged: () {},
+                        onTextChanged: (newText) {
+                          widget.productVisualization.quantity = newText;
+                        },
                       ),
                     ),
                     Container(
@@ -122,7 +158,9 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                         textInputType: const TextInputType.numberWithOptions(
                             decimal: true),
                         textInputFormatters: [DecimalFormatter()],
-                        onTextChanged: (newText) {},
+                        onTextChanged: (newText) {
+                          widget.productVisualization.buyingPrice = newText;
+                        },
                       ),
                     ),
                     Container(
@@ -135,7 +173,9 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                         textInputType: const TextInputType.numberWithOptions(
                             decimal: true),
                         textInputFormatters: [DecimalFormatter()],
-                        onTextChanged: () {},
+                        onTextChanged: (newText) {
+                          widget.productVisualization.sellingPrice = newText;
+                        },
                       ),
                     ),
                   ],
@@ -146,5 +186,25 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
         ),
       ),
     );
+  }
+
+  void _tryToFetchCategories() {
+    _viewModel?.fetchCategories((List<CategoryResponse> categoriesResponse) {
+      _onFetchProductsSuccess(categoriesResponse);
+    }, () {
+      _onFetchProductsError();
+    });
+  }
+
+  void _onFetchProductsError() {
+    setState(() {
+      _shouldShowError = true;
+    });
+  }
+
+  void _onFetchProductsSuccess(List<CategoryResponse> categoriesResponse) {
+    categories = categoriesResponse.map((category) {
+      return ProductCategory(category.id, category.name);
+    }).toList();
   }
 }

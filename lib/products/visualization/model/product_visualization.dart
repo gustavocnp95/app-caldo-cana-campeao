@@ -6,5 +6,8 @@ class ProductVisualization {
   ProductType? productType;
   ProductCategory? productCategory;
   ProductUnitMeasure? unitMeasure;
+  String? productDescription;
   String? sellingPrice;
+  String? buyingPrice;
+  String? quantity;
 }

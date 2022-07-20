@@ -10,4 +10,12 @@ class ProductCategory implements DropdownItem {
   String getDropdownLabel() {
     return categoryName;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is ProductCategory) {
+      return categoryId == other.categoryId;
+    }
+    return false;
+  }
 }
