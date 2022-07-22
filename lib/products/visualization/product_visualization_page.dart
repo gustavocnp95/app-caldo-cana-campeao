@@ -96,6 +96,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
                       hint: "Tipo do Produto",
                       dropdownValue: widget.productVisualization.productType,
                       values: ProductType.getAvailableTypes(),
+                      isEditing: isEditing,
                     ),
                   ),
                   Container(
@@ -107,6 +108,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
                       dropdownValue:
                           widget.productVisualization.productCategory,
                       values: categories,
+                      isEditing: isEditing,
                     ),
                   ),
                 ],
@@ -154,6 +156,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
                         dropdownValue: widget.productVisualization.unitMeasure,
                         values: ProductUnitMeasure.getAvailableUnits(),
                         hint: "Unidade de Medida",
+                        isEditing: isEditing,
                       ),
                     ),
                   ],
