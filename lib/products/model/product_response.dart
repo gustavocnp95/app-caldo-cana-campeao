@@ -1,3 +1,4 @@
+import 'package:caldo_cana_campeao/products/model/product_category_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'composition_response.dart';
@@ -12,7 +13,7 @@ class ProductResponse {
   final double? costValue;
   final double saleValue;
   final String groupType;
-  final String category;
+  final ProductCategoryDto category;
   final String unMeasure;
   final List<CompositionResponse> itemsCompositions;
 

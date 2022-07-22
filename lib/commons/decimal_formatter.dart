@@ -11,13 +11,7 @@ class DecimalFormatter extends TextInputFormatter {
     } else if (newValue.text.compareTo(oldValue.text) != 0) {
       final int selectionIndexFromTheRight =
           newValue.text.length - newValue.selection.end;
-      String clearedText = newValue.text.replaceAll(dotsAndCommas(), "");
-      String newString;
-      if (clearedText.length == 1 || clearedText.length == 2) {
-        newString = ",$clearedText";
-      } else {
-        newString = formatToDecimal(clearedText);
-      }
+      String newString = format(newValue.text);
       return TextEditingValue(
         text: newString,
         selection: TextSelection.collapsed(
@@ -27,6 +21,17 @@ class DecimalFormatter extends TextInputFormatter {
     } else {
       return newValue;
     }
+  }
+
+  String format(String newValue) {
+     String clearedText = newValue.replaceAll(dotsAndCommas(), "");
+    String newString;
+    if (clearedText.length == 1 || clearedText.length == 2) {
+      newString = ",$clearedText";
+    } else {
+      newString = formatToDecimal(clearedText);
+    }
+    return newString;
   }
 
   String formatToDecimal(String clearedText) =>

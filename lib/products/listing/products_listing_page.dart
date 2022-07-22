@@ -3,7 +3,6 @@ import 'package:caldo_cana_campeao/custom_widgets/campeao_elevated_button.dart';
 import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/products/listing/products_listing_page_view_model.dart';
 import 'package:caldo_cana_campeao/products/model/product_response.dart';
-import 'package:caldo_cana_campeao/products/visualization/model/product_category.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
 import 'package:caldo_cana_campeao/products/visualization/product_visualization_page.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,10 @@ import '../../color/theme_colors.dart';
 import '../../custom_widgets/app_error.dart';
 import '../../custom_widgets/app_loading.dart';
 import '../../custom_widgets/campeao_app_bar.dart';
+import '../model/product_category_dto.dart';
+import '../visualization/model/product_category.dart';
+import '../visualization/model/product_type.dart';
+import '../visualization/model/product_unit_measure.dart';
 
 class ProductsListingPage extends StatefulWidget {
   @override
@@ -225,15 +228,15 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
     productsResponse.groupBy((product) => product.category).forEach(
       (category, products) {
         if (isAnyElevatedButtonFilterApplied()) {
-          if (category.toUpperCase() == "FINAL" &&
+          if (category.category.toUpperCase() == "FINAL" &&
               !_elevatedFinalButtonSelected) {
             return;
           }
-          if (category.toUpperCase() == "COMPOSTO" &&
+          if (category.category.toUpperCase() == "COMPOSTO" &&
               !_elevatedCompostoButtonSelected) {
             return;
           }
-          if (category.toUpperCase() == "MATERIA-PRIMA" &&
+          if (category.category.toUpperCase() == "MATERIA-PRIMA" &&
               !_elevatedMateriaPrimaButtonSelected) {
             return;
           }
@@ -272,7 +275,7 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
   InkWell _createProductItem(ProductResponse product) {
     return InkWell(
       onTap: () {
-        _onProductItemClicked();
+        _onProductItemClicked(product);
       },
       child: Row(
         children: [
@@ -314,23 +317,31 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
     );
   }
 
-  void _onProductItemClicked() async {
+  void _onProductItemClicked(ProductResponse product) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ProductVisualizatioPage(
-          productVisualization: ProductVisualization(),
+        builder: (context) => ProductVisualizationPage(
+          productVisualization: ProductVisualization(
+              ProductType(product.groupType),
+              ProductCategory(product.category.id, product.category.category),
+              ProductUnitMeasure(product.unMeasure),
+              product.name,
+              product.saleValue.toStringAsFixed(2).replaceAll(".", ","),
+              product.costValue?.toStringAsFixed(2).replaceAll(".", ","),
+              product.qtt.toStringAsFixed(2).replaceAll(".", ",")),
+          isEditing: false,
         ),
       ),
     );
     _tryToFetchProducts();
   }
 
-  Padding _createProductCategoryItem(String category) {
+  Padding _createProductCategoryItem(ProductCategoryDto category) {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: Text(
-        category,
+        category.category,
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w500,

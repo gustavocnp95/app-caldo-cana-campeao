@@ -10,11 +10,20 @@ class ProductType implements DropdownItem {
     return typeName;
   }
 
+
+  @override
+  bool operator ==(Object other) {
+    if (other is ProductType) {
+      return typeName == other.typeName;
+    }
+    return false;
+  }
+
   static List<ProductType> getAvailableTypes() {
     return [
-      ProductType("Final"),
-      ProductType("Composto"),
-      ProductType("Matéria-Prima"),
+      ProductType("final"),
+      ProductType("composto"),
+      ProductType("materia_prima"),
     ];
   }
 }

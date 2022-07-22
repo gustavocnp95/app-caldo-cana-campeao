@@ -10,6 +10,14 @@ class ProductUnitMeasure extends DropdownItem {
     return unitMeasure;
   }
 
+  @override
+  bool operator ==(Object other) {
+    if (other is ProductUnitMeasure) {
+      return unitMeasure == other.unitMeasure;
+    }
+    return false;
+  }
+
   static List<ProductUnitMeasure> getAvailableUnits() {
     return [
       ProductUnitMeasure("kg"),

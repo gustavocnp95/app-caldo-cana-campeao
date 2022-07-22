@@ -14,19 +14,25 @@ import '../../custom_widgets/app_loading.dart';
 import '../../custom_widgets/campeao_app_bar.dart';
 import 'model/product_category.dart';
 
-class ProductVisualizatioPage extends StatefulWidget {
+class ProductVisualizationPage extends StatefulWidget {
   final ProductVisualization productVisualization;
+  final bool isEditing;
 
-  const ProductVisualizatioPage({required this.productVisualization}) : super();
+  const ProductVisualizationPage({
+    Key? key,
+    required this.productVisualization,
+    this.isEditing = false,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ProductVisualizationPageState();
 }
 
-class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
+class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
   ProductsVisualizationPageViewModel? _viewModel;
   bool _shouldShowError = false;
   List<ProductCategory> categories = [];
+  bool isEditing = false;
 
   @override
   void initState() {
@@ -36,6 +42,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
     Future.delayed(Duration.zero, () {
       _tryToFetchCategories();
     });
+    isEditing = widget.isEditing;
   }
 
   @override
@@ -110,6 +117,9 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                   children: [
                     Expanded(
                       child: CampeaoInputTextField(
+                        enabled: isEditing,
+                        initialText:
+                            widget.productVisualization.productDescription,
                         hintText: "Nome do produto",
                         onTextChanged: (newText) {
                           widget.productVisualization.productDescription =
@@ -126,8 +136,10 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                   children: [
                     Expanded(
                       child: CampeaoInputTextField(
+                        enabled: isEditing,
                         textInputType: TextInputType.number,
                         textInputFormatters: [DecimalFormatter()],
+                        initialText: widget.productVisualization.quantity,
                         hintText: "Quantidade",
                         onTextChanged: (newText) {
                           widget.productVisualization.quantity = newText;
@@ -153,11 +165,13 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                   children: [
                     Expanded(
                       child: CampeaoInputTextField(
+                        enabled: isEditing,
                         hintText: "Compra",
                         prefixText: "R\$",
                         textInputType: const TextInputType.numberWithOptions(
                             decimal: true),
                         textInputFormatters: [DecimalFormatter()],
+                        initialText: widget.productVisualization.buyingPrice,
                         onTextChanged: (newText) {
                           widget.productVisualization.buyingPrice = newText;
                         },
@@ -173,6 +187,8 @@ class _ProductVisualizationPageState extends State<ProductVisualizatioPage> {
                         textInputType: const TextInputType.numberWithOptions(
                             decimal: true),
                         textInputFormatters: [DecimalFormatter()],
+                        initialText: widget.productVisualization.sellingPrice,
+                        enabled: isEditing,
                         onTextChanged: (newText) {
                           widget.productVisualization.sellingPrice = newText;
                         },

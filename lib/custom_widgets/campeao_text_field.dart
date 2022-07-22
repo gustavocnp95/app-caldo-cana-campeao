@@ -99,7 +99,10 @@ class _CampeaoInputTextFieldState extends State<CampeaoInputTextField> {
                 ? widget.prefixIconButton
                 : Padding(
                     padding: const EdgeInsets.only(left: 5, right: 3),
-                    child: Text(widget.prefixText!),
+                    child: Text(
+                      widget.prefixText!,
+                      style: const TextStyle(color: CampeaoColors.primaryColor),
+                    ),
                   ),
             prefixIconConstraints: const BoxConstraints(),
             suffixIcon: widget.hidePasswordEnabled

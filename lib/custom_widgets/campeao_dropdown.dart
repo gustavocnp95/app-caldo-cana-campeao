@@ -8,12 +8,14 @@ class CampeaoDropdown extends StatefulWidget {
   DropdownItem? dropdownValue;
   List<DropdownItem> values;
   String? hint;
+  bool isEditing;
 
   CampeaoDropdown({
     Key? key,
     required this.dropdownValue,
     required this.values,
     this.hint,
+    this.isEditing = false,
   }) : super(key: key);
 
   @override
@@ -25,13 +27,13 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
   Widget build(final BuildContext context) {
     return Container(
       height: 55,
-      decoration: const ShapeDecoration(
+      decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              width: 1.0,
+              width: 0.8,
               style: BorderStyle.solid,
-              color: CampeaoColors.primaryColor),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: widget.isEditing ? CampeaoColors.primaryColor : CampeaoColors.disabledColor),
+          borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
       ),
       child: DropdownButtonHideUnderline(
@@ -42,7 +44,8 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     widget.hint!,
-                    style: const TextStyle(color: CampeaoColors.primaryColor, fontSize: 15),
+                    style: const TextStyle(
+                        color: CampeaoColors.primaryColor, fontSize: 15),
                   ),
                 )
               : null,
@@ -54,11 +57,7 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
           elevation: 16,
           style: const TextStyle(color: CampeaoColors.primaryTextColor),
           borderRadius: BorderRadius.circular(15),
-          onChanged: (DropdownItem? item) {
-            setState(() {
-              widget.dropdownValue = item!;
-            });
-          },
+          onChanged: widget.isEditing ? onItemChanged : null,
           items: widget.values
               .map<DropdownMenuItem<DropdownItem>>((DropdownItem item) {
             return DropdownMenuItem<DropdownItem>(
@@ -72,5 +71,11 @@ class _CampeaoDropdownState extends State<CampeaoDropdown> {
         ),
       ),
     );
+  }
+
+  void onItemChanged(DropdownItem? item) {
+    setState(() {
+      widget.dropdownValue = item!;
+    });
   }
 }

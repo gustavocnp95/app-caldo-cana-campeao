@@ -14,7 +14,7 @@ ProductResponse _$ProductResponseFromJson(Map<String, dynamic> json) =>
       (json['costValue'] as num?)?.toDouble(),
       (json['saleValue'] as num).toDouble(),
       json['groupType'] as String,
-      json['category'] as String,
+      ProductCategoryDto.fromJson(json['category'] as Map<String, dynamic>),
       json['unMeasure'] as String,
       (json['itemsCompositions'] as List<dynamic>)
           .map((e) => CompositionResponse.fromJson(e as Map<String, dynamic>))
