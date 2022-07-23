@@ -4,6 +4,7 @@ import 'package:caldo_cana_campeao/custom_widgets/campeao_text_field.dart';
 import 'package:caldo_cana_campeao/products/listing/products_listing_page_view_model.dart';
 import 'package:caldo_cana_campeao/products/model/product_response.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/product_visualization_composition.dart';
 import 'package:caldo_cana_campeao/products/visualization/product_visualization_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -227,22 +228,22 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
     List<Widget> itemsList = [];
     productsResponse.groupBy((product) => product.category).forEach(
       (category, products) {
-        if (isAnyElevatedButtonFilterApplied()) {
-          if (category.category.toUpperCase() == "FINAL" &&
-              !_elevatedFinalButtonSelected) {
-            return;
-          }
-          if (category.category.toUpperCase() == "COMPOSTO" &&
-              !_elevatedCompostoButtonSelected) {
-            return;
-          }
-          if (category.category.toUpperCase() == "MATERIA-PRIMA" &&
-              !_elevatedMateriaPrimaButtonSelected) {
-            return;
-          }
-        }
         List<Widget> productsItems = [];
         for (var product in products) {
+          if (isAnyElevatedButtonFilterApplied()) {
+            if (product.groupType.toUpperCase() == "FINAL" &&
+                !_elevatedFinalButtonSelected) {
+              continue;
+            }
+            if (product.groupType.toUpperCase() == "COMPOSTO" &&
+                !_elevatedCompostoButtonSelected) {
+              continue;
+            }
+            if (product.groupType.toUpperCase() == "MATERIA_PRIMA" &&
+                !_elevatedMateriaPrimaButtonSelected) {
+              continue;
+            }
+          }
           if (_searchProductText == null ||
               _searchProductText!.isEmpty ||
               product.name
@@ -329,7 +330,14 @@ class _ProductsListingPageState extends State<ProductsListingPage> {
               product.name,
               product.saleValue.toStringAsFixed(2).replaceAll(".", ","),
               product.costValue?.toStringAsFixed(2).replaceAll(".", ","),
-              product.qtt.toStringAsFixed(2).replaceAll(".", ",")),
+              product.qtt.toStringAsFixed(2).replaceAll(".", ","),
+              product.itemsCompositions.map((itemComposition) {
+                return ProductVisualizationComposition(
+                    itemComposition.id,
+                    itemComposition.name,
+                    itemComposition.qtt.toStringAsFixed(2).replaceAll(".", ","),
+                    itemComposition.unMeasure);
+              }).toList()),
           isEditing: false,
         ),
       ),

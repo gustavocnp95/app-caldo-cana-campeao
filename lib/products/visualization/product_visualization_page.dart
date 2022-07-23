@@ -200,6 +200,19 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
                   ],
                 ),
               ),
+              Container(
+                padding: const EdgeInsets.only(top: 20),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: widget.productVisualization.composition?.length,
+                  itemBuilder: (context, index) {
+                    final productComposition =
+                        widget.productVisualization.composition![index];
+                    return Text(productComposition.name);
+                  },
+                ),
+              ),
             ],
           ),
         ),

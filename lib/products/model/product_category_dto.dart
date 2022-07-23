@@ -13,4 +13,11 @@ class ProductCategoryDto {
       _$ProductCategoryDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductCategoryDtoToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      other is ProductCategoryDto && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

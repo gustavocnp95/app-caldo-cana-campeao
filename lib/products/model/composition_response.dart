@@ -7,8 +7,8 @@ class CompositionResponse {
   final int id;
   final String name;
   final double qtt;
-  final double costValue;
-  final double saleValue;
+  final double? costValue;
+  final double? saleValue;
   final String groupType;
   final String category;
   final String unMeasure;
