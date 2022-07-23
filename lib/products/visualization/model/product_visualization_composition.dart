@@ -1,12 +1,8 @@
 class ProductVisualizationComposition {
   final int id;
   final String name;
-  final String qtt;
+  String qtt;
   final String unMeasure;
 
-  ProductVisualizationComposition(
-      this.id,
-      this.name,
-      this.qtt,
-      this.unMeasure);
+  ProductVisualizationComposition(this.id, this.name, this.qtt, this.unMeasure);
 }

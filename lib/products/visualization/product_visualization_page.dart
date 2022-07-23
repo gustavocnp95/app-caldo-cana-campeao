@@ -4,10 +4,12 @@ import 'package:caldo_cana_campeao/products/visualization/model/category_respons
 import 'package:caldo_cana_campeao/products/visualization/model/product_type.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_unit_measure.dart';
 import 'package:caldo_cana_campeao/products/visualization/model/product_visualization.dart';
+import 'package:caldo_cana_campeao/products/visualization/model/product_visualization_composition.dart';
 import 'package:caldo_cana_campeao/products/visualization/product_visualization_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../color/theme_colors.dart';
 import '../../commons/decimal_formatter.dart';
 import '../../custom_widgets/app_error.dart';
 import '../../custom_widgets/app_loading.dart';
@@ -200,8 +202,62 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
                   ],
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: Text(
+                  "Composição",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  children: const [
+                    Expanded(
+                      child: Text(
+                        "Item",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "Valor",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "Un. Medida",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Text(
+                      "Ação",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 0),
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -209,7 +265,7 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
                   itemBuilder: (context, index) {
                     final productComposition =
                         widget.productVisualization.composition![index];
-                    return Text(productComposition.name);
+                    return _createCompositionItem(productComposition);
                   },
                 ),
               ),
@@ -219,6 +275,57 @@ class _ProductVisualizationPageState extends State<ProductVisualizationPage> {
       ),
     );
   }
+
+  Widget _createCompositionItem(
+      ProductVisualizationComposition productComposition) {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            productComposition.name,
+            style: const TextStyle(fontSize: 17),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            child: CampeaoInputTextField(
+              initialText: productComposition.qtt,
+              onTextChanged: (newText) {
+                productComposition.qtt = newText;
+              },
+              isUnderlined: true,
+              enabled: false,
+              textInputType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              textInputFormatters: [DecimalFormatter()],
+              backgroundColor: Colors.transparent,
+              fontSize: 17,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            productComposition.unMeasure,
+            style: const TextStyle(fontSize: 17),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        IconButton(
+            onPressed: isEditing
+                ? () {
+                    _onDeleteItemClicked(productComposition);
+                  }
+                : null,
+            icon: Icon(
+              Icons.delete_forever_outlined,
+              color: isEditing ? CampeaoColors.primaryColor : Colors.grey,
+            )),
+      ],
+    );
+  }
+
+  void _onDeleteItemClicked(
+      ProductVisualizationComposition productComposition) {}
 
   void _tryToFetchCategories() {
     _viewModel?.fetchCategories((List<CategoryResponse> categoriesResponse) {
